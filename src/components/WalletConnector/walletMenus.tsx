@@ -10,7 +10,7 @@ export function WalletMenus() {
         <DropdownMenu.Root>
             <DropdownMenu.Trigger>
                 <Button
-                    className='cursor-pointer'
+                    className='nav-btn'
                 >
                     Connect Wallet
                     <DropdownMenu.TriggerIcon />
@@ -21,7 +21,7 @@ export function WalletMenus() {
                     connectors.map((connector) =>
                         <DropdownMenu.Item
                             key={connector.uid}
-                            className='cursor-pointer'
+                            className='nav-menu_btn'
                             onClick={() => connect({
                                 connector,
                                 chainId

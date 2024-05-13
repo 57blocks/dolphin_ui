@@ -1,0 +1,7 @@
+.nav-btn {
+    @apply cursor-pointer bg-white hover:bg-gray-200 text-black py-6 rounded-lg;
+}
+
+.nav-menu_btn {
+    @apply cursor-pointer bg-white hover:bg-gray-200 text-black py-2 rounded-lg;
+}

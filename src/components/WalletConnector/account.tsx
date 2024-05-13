@@ -15,7 +15,7 @@ export function Account() {
         <DropdownMenu.Root>
             <DropdownMenu.Trigger>
                 <Button
-                    className='cursor-pointer'
+                    className='nav-btn'
                 >
                     {sepolia.name}&nbsp;&nbsp;
                     {formatAddress(address) || 'Not Connected'}
@@ -24,7 +24,7 @@ export function Account() {
             </DropdownMenu.Trigger>
             <DropdownMenu.Content>
                 <DropdownMenu.Item
-                    className='cursor-pointer w-full'
+                    className='nav-menu_btn'
                     onClick={() => {
                         setOpen(true)
                     }}

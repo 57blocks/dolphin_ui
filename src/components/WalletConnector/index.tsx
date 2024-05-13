@@ -3,6 +3,7 @@ import { WagmiProvider, useAccount } from 'wagmi'
 import { config } from './wagmi.config'
 import { WalletMenus } from './walletMenus'
 import { Account } from './account'
+import './style.css'
 
 const queryClient = new QueryClient()
 
