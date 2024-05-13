@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@radix-ui/themes';
 import React, { useState } from 'react';
 import clx from 'classnames';
