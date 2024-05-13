@@ -21,6 +21,7 @@ export default function RootLayout({
           <WalletProvider>
             <Nav />
             {children}
+            <div className="py-10"></div>
           </WalletProvider>
         </Theme>
       </body>
