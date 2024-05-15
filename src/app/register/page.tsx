@@ -1,15 +1,11 @@
 'use client'
 
-import NftsCard from "./components/NftsCards/";
-
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-
-const queryClient = new QueryClient()
+import NftCards from "./components/NftCards";
 
 export default function Register() {
-    return <main className="flex min-h-screen flex-col items-center justify-between">
+    return <main className="flex flex-col items-center justify-between">
         <div className="container mt-10">
-            <NftsCard />
+            <NftCards />
         </div>
     </main >
 }

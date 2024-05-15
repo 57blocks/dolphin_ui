@@ -47,7 +47,7 @@ export const getNFTByWallet = async (
     if (!walletAddress) return null
 
     const options = createRequestOptions()
-    const url = `https://api.simplehash.com/api/v0/nfts/owners?chains=${simplehashNetworks.sepolia}&wallet_addresses=${walletAddress}`
+    const url = `https://api.simplehash.com/api/v0/nfts/owners?chains=${simplehashNetworks.sepolia}&wallet_addresses=${walletAddress}&limit=1000`
     const response = await fetch(url, options)
     const data = await response.json()
     return data
