@@ -1,5 +1,7 @@
-export default function AssetDetail() {
+export default function Page({ params }: { params: { slug: string } }) {
     return (
-        <div>detail</div>
+        <div>
+            {params.slug}
+        </div>
     )
 }

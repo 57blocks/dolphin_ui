@@ -5,6 +5,7 @@ import { Button, ChevronDownIcon } from "@radix-ui/themes";
 import { useState } from "react";
 import clx from "classnames";
 import AssetRelation from "./AssetRelation";
+import Link from "next/link";
 
 export default function AssetItem({
     asset
@@ -22,7 +23,9 @@ export default function AssetItem({
                 />
                 <div className="flex flex-1 ml-4 items-center">
                     <div className="w-[200px]">
-                        <h4 className="text-lg font-bold">{asset.name || 'Untitled'}</h4>
+                        <h4 className="text-lg font-bold hover:text-indigo-600">
+                            <Link href={`/assets/${asset.ipAsset.id}`}>{asset.name || 'Untitled'}</Link>
+                        </h4>
                         <p>Token ID: {asset.token_id}</p>
                     </div>
                     <div className="h-[30px] w-[1px] bg-gray-300 ml-4"></div>

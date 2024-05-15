@@ -1,5 +1,6 @@
 import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 
 export default function AssetRelationCard({
     asset
@@ -15,7 +16,9 @@ export default function AssetRelationCard({
                     alt=""
                 />
                 <div className="ml-4">
-                    <h4 className="text-lg font-medium">{asset.name}</h4>
+                    <h4 className="text-lg font-medium hover:text-indigo-600">
+                        <Link href={`/assets/${asset.ipAsset.id}`}>{asset.name || 'Untitled'}</Link>
+                    </h4>
                     <p>Token ID: {asset.token_id}</p>
                 </div>
                 <div className="flex items-center ml-4">
