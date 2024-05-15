@@ -2,9 +2,10 @@
 
 import { useNftsInConnectedWallet } from "@/app/hooks/useNftsInConnectedWallet";
 import SkeletonCard from "@/components/Skeletons/SkeletonCard";
-import { Checkbox } from "@radix-ui/themes";
+import { Button, Checkbox } from "@radix-ui/themes";
 import { useState } from "react";
 import clx from 'classnames';
+import Link from "next/link";
 
 export default function NftCards() {
     const { nfts, isLoading } = useNftsInConnectedWallet()
@@ -19,7 +20,7 @@ export default function NftCards() {
                     isLoading && <SkeletonCard number={6} />
                 }
                 {
-                    nfts?.length && nfts.map((nft, index) => (
+                    nfts?.length ? nfts.map((nft, index) => (
                         <div
                             key={index}
                             className={clx(
@@ -45,7 +46,10 @@ export default function NftCards() {
                                 </div>
                             </div>
                         </div>
-                    ))
+                    )) : <div className="h-[200px] col-start-2 flex flex-col space-y-4 justify-center items-center">
+                        <h3 className="font-bold text-lg text-center">You still have no asset, Please register one!</h3>
+                        <Link target="_blank" href='https://play.storyprotocol.xyz/assets/register'><Button className=" cursor-pointer">Register</Button></Link>
+                    </div>
                 }
             </div>
         </div>
