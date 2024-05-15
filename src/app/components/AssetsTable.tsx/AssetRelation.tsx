@@ -1,10 +1,10 @@
 'use client'
 
-import { AnimatePresence, motion } from "framer-motion";
 import AssetRelationCard from "./AssetRelationCard";
 import { NftWithAsset, fetchNftByIpAssets } from "@/app/hooks/useIPAssetNfts";
 import { useEffect, useState } from "react";
 import { Asset } from "@/story/types";
+import AnimateHeightBlock from "@/components/AnimateHeightBlock";
 
 interface IProps {
     isVisible: boolean,
@@ -48,43 +48,37 @@ export default function AssetRelation({ isVisible, asset }: IProps) {
         if (isVisible) { getData() }
     }, [isVisible])
 
-    return <AnimatePresence>
-        {isVisible && (
-            <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="overflow-auto max-h-[500px]"
-            >
-                <div className="px-4 pb-4">
-                    <h3 className="font-semibold mt-4">Root</h3>
-                    <div className="grid grid-cols-4 mt-4 gap-8">
-                        <AssetRelationCard asset={asset} />
-                    </div>
+    return <AnimateHeightBlock
+        isVisible={isVisible}
+        className="overflow-auto max-h-[500px]"
+    >
+        <div className="px-4 pb-4">
+            <h3 className="font-semibold mt-4">Root</h3>
+            <div className="grid grid-cols-4 mt-4 gap-8">
+                <AssetRelationCard asset={asset} />
+            </div>
 
-                    {
-                        child.length ? (<>
-                            <h3 className="font-semibold mt-4">Children</h3>
-                            <div className="grid grid-cols-4 mt-4 gap-8">
-                                {
-                                    child.map(c => <AssetRelationCard key={c.ipAsset.id} asset={c} />)
-                                }
-                            </div>
-                        </>
-                        ) : null
-                    }
-                    {
-                        grandChild.length ? (<>
-                            <h3 className="font-semibold mt-4">Grand Children</h3>
-                            <div className="grid grid-cols-4 mt-4 gap-8">
-                                {
-                                    grandChild.map(c => <AssetRelationCard key={c.ipAsset.id} asset={c} />)
-                                }
-                            </div>
-                        </>) : null
-                    }
-                </div>
-            </motion.div>
-        )}
-    </AnimatePresence>
+            {
+                child.length ? (<>
+                    <h3 className="font-semibold mt-4">Children</h3>
+                    <div className="grid grid-cols-4 mt-4 gap-8">
+                        {
+                            child.map(c => <AssetRelationCard key={c.ipAsset.id} asset={c} />)
+                        }
+                    </div>
+                </>
+                ) : null
+            }
+            {
+                grandChild.length ? (<>
+                    <h3 className="font-semibold mt-4">Grand Children</h3>
+                    <div className="grid grid-cols-4 mt-4 gap-8">
+                        {
+                            grandChild.map(c => <AssetRelationCard key={c.ipAsset.id} asset={c} />)
+                        }
+                    </div>
+                </>) : null
+            }
+        </div>
+    </AnimateHeightBlock>
 }

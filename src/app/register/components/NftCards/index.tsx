@@ -41,9 +41,7 @@ export default function NftCards() {
                                     <h4 className="text-lg font-bold">{nft.name}</h4>
                                     <p>Token ID: {nft.token_id}</p>
                                 </div>
-                                <div className="flex justify-center items-center w-4 h-4 rounded-full border border-[#3358D4] overflow-auto">
-                                    <Checkbox checked={nft.token_id === selected} />
-                                </div>
+                                <Checkbox checked={nft.token_id === selected} />
                             </div>
                         </div>
                     )) : <div className="h-[200px] col-start-2 flex flex-col space-y-4 justify-center items-center">

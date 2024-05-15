@@ -18,6 +18,8 @@ export enum RESOURCE_TYPE {
     ROYALTY_SPLIT = 'royalties/splits',
     TAGS = 'tags',
     TRANSACTION = 'transactions',
+    LICENSE_IP_TERMS = 'licenses/ip/terms',
+    LICENSE_TERMS = 'licenses/terms'
 }
 
 export type ResourceType =
@@ -38,6 +40,8 @@ export type ResourceType =
     | RESOURCE_TYPE.ROYALTY_POLICY
     | RESOURCE_TYPE.ROYALTY_SPLIT
     | RESOURCE_TYPE.DISPUTE
+    | RESOURCE_TYPE.LICENSE_IP_TERMS
+    | RESOURCE_TYPE.LICENSE_TERMS
 
 export type PaginationOptions = {
     limit?: number
@@ -323,4 +327,13 @@ export type RoyaltySplit = {
 export type RoyaltyHolder = {
     id: Address
     ownership: string
+}
+
+export type Term = {
+    blockNumber: string
+    blockTime: string
+    id: Address
+    ipId: Address
+    licenseTemplate: Address
+    licenseTermsId: string
 }
