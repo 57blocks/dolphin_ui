@@ -1,5 +1,5 @@
 import { getResource, listResource } from "@/story/storyApi";
-import { Term, RESOURCE_TYPE } from "@/story/types";
+import { Term, RESOURCE_TYPE, LicenseWithTerms } from "@/story/types";
 import { useQuery } from "@tanstack/react-query";
 import { Address } from "viem";
 
@@ -23,7 +23,7 @@ export default function useLicense(ipId: Address) {
                 })
                 return result
             });
-            return licenses;
+            return licenses as LicenseWithTerms[];
         }
     }
 

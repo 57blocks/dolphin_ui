@@ -337,3 +337,17 @@ export type Term = {
     licenseTemplate: Address
     licenseTermsId: string
 }
+
+export type LicenseTerm = {
+    trait_type: string
+    value: string
+}
+
+export type LicenseWithTerms = {
+    blockNumber: string
+    blockTime: string
+    id: Address
+    ipId: Address
+    licenseTemplate: Address
+    licenseTerms: LicenseTerm[]
+}
