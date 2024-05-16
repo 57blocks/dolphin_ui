@@ -9,10 +9,12 @@ import LicenseType from "./components/LicenseType";
 import RelationshipGraph from "./components/RelationshipGraph";
 import BuyModal from "@/components/BuyModal";
 import { useState } from "react";
+import RemixModal from "@/components/RemixModal";
 
 export default function Page({ params: { ipId } }: { params: { ipId: string } }) {
     const { data, isLoading } = useAssetWithNft(ipId);
     const [open, setOpen] = useState(false);
+    const [openRemixModal, setOpenRemixModal] = useState(false);
     if (isLoading) return <LoadingBlock />;
     return (
         <main className="flex flex-col items-center justify-between">
@@ -24,7 +26,11 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                         <h4 className="text-2xl font-bold text-green-600">$10-$20</h4>
                     </div>
                     <div className=" space-x-2">
-                        <Button variant="outline" className="w-[150px] py-5 cursor-pointer">Remix</Button>
+                        <Button
+                            variant="outline"
+                            className="w-[150px] py-5 cursor-pointer"
+                            onClick={() => setOpenRemixModal(true)}
+                        >Remix</Button>
                         <Button
                             onClick={() => setOpen(true)}
                             className="w-[150px] py-5 cursor-pointer"
@@ -100,6 +106,11 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
             <BuyModal
                 open={open}
                 onClose={() => setOpen(false)}
+            />
+            <RemixModal
+                open={openRemixModal}
+                asset={data as any}
+                onClose={() => setOpenRemixModal(false)}
             />
         </main>
     )

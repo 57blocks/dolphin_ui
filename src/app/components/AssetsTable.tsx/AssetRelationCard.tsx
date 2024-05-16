@@ -1,5 +1,6 @@
 import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
 import BuyModal from "@/components/BuyModal";
+import RemixModal from "@/components/RemixModal";
 import SellModal from "@/components/SellModal";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -12,23 +13,23 @@ export default function AssetRelationCard({
 }) {
     const [openBuyModal, setBuyModal] = useState(false);
     const [openSellModal, setSellModal] = useState(false);
-
+    const [openRemixModal, setOpenRemixModal] = useState(false);
     return (
         <div className="border bg-white rounded-lg">
-            <div className="p-2 flex justify-around items-center">
+            <div className="p-2 grid grid-cols-5">
                 <img
-                    className="w-8 h-8 rounded-lg flex-shrink-0"
+                    className="col-span-1 object-cover aspect-square rounded-lg "
                     src={asset.image_url}
                     alt=""
                 />
-                <div className="ml-4">
+                <div className="ml-4 col-span-3">
                     <h4 className="text-lg font-medium hover:text-indigo-600">
                         <Link href={`/assets/${asset.ipAsset.id}`}>{asset.name || 'Untitled'}</Link>
                     </h4>
                     <p>Token ID: {asset.token_id}</p>
-                </div>
-                <div className="flex items-center ml-4">
                     <h4 className="text-lg font-bold text-green-600">$10-$20</h4>
+                </div>
+                <div className="flex justify-center items-center ml-4">
                     <ChevronRightIcon />
                 </div>
             </div>
@@ -41,7 +42,10 @@ export default function AssetRelationCard({
                     className="py-1 border-l border-r text-indigo-600 cursor-pointer text-center flex-1"
                     onClick={() => setSellModal(true)}
                 >Sell</div>
-                <div className="py-1 text-indigo-600 cursor-pointer text-center flex-1">Remix</div>
+                <div
+                    className="py-1 text-indigo-600 cursor-pointer text-center flex-1"
+                    onClick={() => setOpenRemixModal(true)}
+                >Remix</div>
             </div>
             <SellModal
                 open={openSellModal}
@@ -50,6 +54,11 @@ export default function AssetRelationCard({
             <BuyModal
                 open={openBuyModal}
                 onClose={() => setBuyModal(false)}
+            />
+            <RemixModal
+                open={openRemixModal}
+                asset={asset as any}
+                onClose={() => setOpenRemixModal(false)}
             />
         </div>
     )
