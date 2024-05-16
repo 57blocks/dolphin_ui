@@ -1,12 +1,18 @@
 import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
+import BuyModal from "@/components/BuyModal";
+import SellModal from "@/components/SellModal";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function AssetRelationCard({
     asset
 }: {
     asset: NftWithAsset
 }) {
+    const [openBuyModal, setBuyModal] = useState(false);
+    const [openSellModal, setSellModal] = useState(false);
+
     return (
         <div className="border bg-white rounded-lg">
             <div className="p-2 flex justify-around items-center">
@@ -27,10 +33,24 @@ export default function AssetRelationCard({
                 </div>
             </div>
             <div className="border-t flex justify-around">
-                <div className="py-1 text-indigo-600 cursor-pointer text-center flex-1">Buy</div>
-                <div className="py-1 border-l border-r text-indigo-600 cursor-pointer text-center flex-1">Sell</div>
+                <div
+                    className="py-1 text-indigo-600 cursor-pointer text-center flex-1"
+                    onClick={() => setBuyModal(true)}
+                >Buy</div>
+                <div
+                    className="py-1 border-l border-r text-indigo-600 cursor-pointer text-center flex-1"
+                    onClick={() => setSellModal(true)}
+                >Sell</div>
                 <div className="py-1 text-indigo-600 cursor-pointer text-center flex-1">Remix</div>
             </div>
+            <SellModal
+                open={openSellModal}
+                onClose={() => setSellModal(false)}
+            />
+            <BuyModal
+                open={openBuyModal}
+                onClose={() => setBuyModal(false)}
+            />
         </div>
     )
 }

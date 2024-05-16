@@ -1,16 +1,18 @@
 'use client'
 
 import useAssetWithNft from "./hooks/useAssetWithNft";
-import { useMemo } from "react";
 import { Button } from "@radix-ui/themes";
 import Lineage from "./components/Lineage";
 import LoadingBlock from "./components/LoadingBlock";
 import Detail from "./components/Detail";
 import LicenseType from "./components/LicenseType";
 import RelationshipGraph from "./components/RelationshipGraph";
+import BuyModal from "@/components/BuyModal";
+import { useState } from "react";
 
 export default function Page({ params: { ipId } }: { params: { ipId: string } }) {
     const { data, isLoading } = useAssetWithNft(ipId);
+    const [open, setOpen] = useState(false);
     if (isLoading) return <LoadingBlock />;
     return (
         <main className="flex flex-col items-center justify-between">
@@ -23,7 +25,10 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                     </div>
                     <div className=" space-x-2">
                         <Button variant="outline" className="w-[150px] py-5 cursor-pointer">Remix</Button>
-                        <Button className="w-[150px] py-5 cursor-pointer">Buy</Button>
+                        <Button
+                            onClick={() => setOpen(true)}
+                            className="w-[150px] py-5 cursor-pointer"
+                        >Buy</Button>
                     </div>
                 </div>
                 <div className="col-span-12 grid grid-cols-3 rounded-4xl bg-neutral-50 shadow-sm p-4">
@@ -92,6 +97,10 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                     ) : null}
                 </div>
             </section>
+            <BuyModal
+                open={open}
+                onClose={() => setOpen(false)}
+            />
         </main>
     )
 }
