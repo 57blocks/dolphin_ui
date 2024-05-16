@@ -7,18 +7,10 @@ import Lineage from "./components/Lineage";
 import LoadingBlock from "./components/LoadingBlock";
 import Detail from "./components/Detail";
 import LicenseType from "./components/LicenseType";
+import RelationshipGraph from "./components/RelationshipGraph";
 
 export default function Page({ params: { ipId } }: { params: { ipId: string } }) {
     const { data, isLoading } = useAssetWithNft(ipId);
-    const hasLineage = useMemo(
-        () =>
-            !!(
-                data?.ipAsset.rootIpIds?.length ||
-                data?.ipAsset.parentIpIds?.length ||
-                data?.ipAsset.childIpIds?.length
-            ),
-        [data]
-    )
     if (isLoading) return <LoadingBlock />;
     return (
         <main className="flex flex-col items-center justify-between">
@@ -89,21 +81,15 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                         <h2 className="text-2xl font-bold">Lineage</h2>
                         <Lineage data={data} />
                     </div>
-                    {/* {assetData.rootIpIds?.length ||
-                        assetData.parentIpIds?.length ||
-                        assetData.childIpIds?.length ? (
-                        <div
-                            ref={graphRef}
-                            className="relative col-span-12 md:col-span-6"
-                        >
-                            <div className="absolute inset-0">
-                                <IpGraph
-                                    width={graphBounds.width}
-                                    height={graphBounds.height}
-                                />
-                            </div>
-                        </div>
-                    ) : null} */}
+                    {data?.ipAsset.rootIpIds?.length ||
+                        data?.ipAsset.parentIpIds?.length ||
+                        data?.ipAsset.childIpIds?.length ? (
+                        <RelationshipGraph
+                            parents={data?.ipAsset.parentIpIds}
+                            childrenAssets={data?.ipAsset.childIpIds}
+                            self={data?.ipAsset}
+                        />
+                    ) : null}
                 </div>
             </section>
         </main>
