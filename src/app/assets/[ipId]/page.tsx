@@ -1,9 +1,7 @@
 'use client'
 
-import Link from "next/link";
 import useAssetWithNft from "./hooks/useAssetWithNft";
 import { useMemo } from "react";
-import clx from 'classnames';
 import { Button } from "@radix-ui/themes";
 import Lineage from "./components/Lineage";
 import LoadingBlock from "./components/LoadingBlock";
@@ -25,7 +23,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
     return (
         <main className="flex flex-col items-center justify-between">
             <section className="container grid max-w-7xl grid-cols-12 gap-8 py-8">
-                <div className="page-header col-span-12 flex items-center justify-between">
+                <div className="col-span-12 flex items-center justify-between">
                     {/* title */}
                     <div className="header-title text-3xl font-bold">
                         {data?.name || 'Untitled'}
@@ -36,9 +34,23 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                         <Button className="w-[150px] py-5 cursor-pointer">Buy</Button>
                     </div>
                 </div>
+                <div className="col-span-12 grid grid-cols-3 rounded-4xl bg-neutral-50 shadow-sm p-4">
+                    <div className="col-span-1 text-center">
+                        <h5 className="font-bold text-xl">26</h5>
+                        <div>Number of Holders</div>
+                    </div>
+                    <div className="col-span-1 text-center">
+                        <h5 className="font-bold text-xl">25</h5>
+                        <div>Number of Childs</div>
+                    </div>
+                    <div className="col-span-1 text-center">
+                        <h5 className="font-bold text-xl">6</h5>
+                        <div>Longest of Child Nodes</div>
+                    </div>
+                </div>
                 {/* image */}
                 <div className="relative col-span-12 flex flex-col gap-6 md:col-span-6">
-                    <div className="flex aspect-square w-full flex-shrink-0 overflow-hidden rounded-4xl bg-neutral-50 shadow-sm">
+                    <div className="flex aspect-square w-full flex-shrink-0 overflow-hidden rounded-4xl bg-neutral-50 shadow-sm p-4">
                         {data?.image_url && (
                             <img
                                 src={data?.image_url}
@@ -71,16 +83,9 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                     </div>
                 </div>
                 <div
-                    className={clx(
-                        'grid grid-cols-12 gap-4 overflow-hidden rounded-4xl bg-neutral-50 shadow-sm',
-                        hasLineage ? 'col-span-12' : 'col-span-12 md:col-span-6'
-                    )}
+                    className='grid grid-cols-12 col-span-12 gap-4 overflow-hidden rounded-4xl bg-neutral-50 shadow-sm'
                 >
-                    <div
-                        className={clx('col-span-12 p-8', {
-                            'md:col-span-6': hasLineage
-                        })}
-                    >
+                    <div className='col-span-6 p-8'>
                         <h2 className="text-2xl font-bold">Lineage</h2>
                         <Lineage data={data} />
                     </div>

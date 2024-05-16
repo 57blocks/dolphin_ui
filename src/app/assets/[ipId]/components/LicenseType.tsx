@@ -73,7 +73,10 @@ function LicenseCollapse({ licenseTypeRule }: { licenseTypeRule: any }) {
                 })}
             />
         </h3>
-        <AnimateHeightBlock isVisible={open}>
+        <AnimateHeightBlock
+            isVisible={open}
+            className=" space-y-1"
+        >
             <h4 className="font-bold text-lg">Others Can</h4>
             {
                 licenseTypeRule.can.map((s: any) => <p key={licenseTypeRule.title + s}>{s}</p>)
@@ -97,12 +100,14 @@ export default function LicenseType({ ipId }: { ipId?: Address }) {
         No License
     </div>
 
-    return data?.map((d, idx) => {
+    return data.map((d, idx) => {
         const licenseType = checkLicenseType(d.licenseTerms);
         const licenseTypeRule = LicenseRules[licenseType];
         return licenseTypeRule ? <LicenseCollapse
             key={d.id + idx}
             licenseTypeRule={licenseTypeRule}
-        /> : null
+        /> : <div className="text-gray-500">
+            No License
+        </div>
     });
 }
