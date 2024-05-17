@@ -105,6 +105,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
             </section>
             <BuyModal
                 open={open}
+                asset={data}
                 onClose={() => setOpen(false)}
             />
             <RemixModal

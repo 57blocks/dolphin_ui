@@ -4,7 +4,8 @@ import { useWaitForTransactionReceipt, useWriteContract } from "wagmi"
 export const useDolphinWriteContract = (
     abi: Abi,
     functionName: string,
-    args: any[]
+    args: any[],
+    value?: bigint
 ) => {
     const {
         data: hash,
@@ -18,6 +19,7 @@ export const useDolphinWriteContract = (
             abi,
             functionName,
             args,
+            value,
         })
     }
     const { isLoading: isConfirming, isSuccess: isConfirmed } =
