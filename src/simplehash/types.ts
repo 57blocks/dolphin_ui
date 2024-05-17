@@ -1,3 +1,5 @@
+import { Address } from "viem"
+
 export type NFTWalletResponse = {
     next_cursor: string | null
     next: string | null
@@ -88,7 +90,7 @@ export type NFTMetadata = {
 
 export type SPExtendedNFTMetadata = NFTMetadata & {
     isRegistered?: boolean
-    ipId?: string
+    ipId?: Address
 }
 
 export type CollectionResponse = {

@@ -19,7 +19,10 @@ export function useNftsInConnectedWallet() {
                 tokenContract,
             },
         })
-        return !!asset.length
+        return {
+            isRegistered: !!asset.length,
+            ipId: asset[0].id
+        }
     }
     const { isLoading, data, isError } = useQuery({
         queryKey: ['nfts-in-connected-wallet', address],
@@ -35,7 +38,7 @@ export function useNftsInConnectedWallet() {
                 )
                 return {
                     ...nft,
-                    isRegistered,
+                    ...isRegistered,
                 }
             })
             const results: SPExtendedNFTMetadata[] = await Promise.allSettled(

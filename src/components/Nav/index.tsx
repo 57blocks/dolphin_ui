@@ -9,7 +9,7 @@ export default function Nav() {
             <Link href='/'>Hackathon</Link>
         </h1>
         <div className="flex items-center flex-1">
-            <Link href='/register'>Remix</Link>
+            <Link href='/register'>Racking</Link>
         </div>
         <div>
             <WalletConnector />

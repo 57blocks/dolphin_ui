@@ -1,13 +1,16 @@
-import { CrossCircledIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
+import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Button, Dialog, TextField } from "@radix-ui/themes";
 
 interface IProps {
     open: boolean
+    asset?: NftWithAsset
     onClose?: () => void
 }
 
 export default function BuyModal({
     open,
+    asset,
     onClose
 }: IProps) {
     return <Dialog.Root open={open}>
