@@ -1,5 +1,5 @@
 import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
-import BuyModal from "@/components/BuyModal";
+import BuyModal from "@/components/TradeModal";
 import RemixModal from "@/components/RemixModal";
 import SellModal from "@/components/SellModal";
 import formatAddress from "@/utils/formatAddress";

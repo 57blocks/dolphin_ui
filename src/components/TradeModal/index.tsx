@@ -1,23 +1,25 @@
 import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
-import { buyAbi, getBuyPriceAfterFeeAbi } from "@/dolphin/abis";
+import { buyAbi, getBuyPriceAfterFeeAbi, getSellPriceAfterFeeAbi, sellAbi } from "@/dolphin/abis";
 import { function_names } from "@/dolphin/constants";
 import { useDolphinReadContract } from "@/dolphin/readContract";
 import { useDolphinWriteContract } from "@/dolphin/writeContract";
 import { CrossCircledIcon } from "@radix-ui/react-icons";
-import { Button, Dialog, TextField } from "@radix-ui/themes";
-import { FocusEventHandler, useState } from "react";
+import { Button, Dialog } from "@radix-ui/themes";
+import { useEffect } from "react";
 import { useAccount, useBalance } from "wagmi";
 import clx from 'classnames'
 import Link from "next/link";
 
 interface IProps {
-    open: boolean
+    open: boolean,
+    method: 'buy' | 'sell'
     asset?: NftWithAsset | null
     onClose?: () => void
 }
 
-export default function BuyModal({
+export default function TradeModal({
     open,
+    method = 'buy',
     asset,
     onClose
 }: IProps) {
@@ -26,15 +28,30 @@ export default function BuyModal({
         address
     })
 
-    const [amount, setAmount] = useState(0)
-
+    const tradeMethod = {
+        buy: {
+            modalTitle: 'Buy shares',
+            abi: buyAbi,
+            functionName: function_names.buy,
+            getPriceAfterFeeFunctionAbi: getBuyPriceAfterFeeAbi,
+            getPriceAfterFeeFunctionName: function_names.getBuyPriceAfterFee
+        },
+        sell: {
+            modalTitle: 'Sell shares',
+            abi: sellAbi,
+            functionName: function_names.sell,
+            getPriceAfterFeeFunctionAbi: getSellPriceAfterFeeAbi,
+            getPriceAfterFeeFunctionName: function_names.getSellPriceAfterFee
+        }
+    }
+    const trade = tradeMethod[method];
     const {
         result,
         isLoading,
         read
     } = useDolphinReadContract(
-        getBuyPriceAfterFeeAbi,
-        function_names.getBuyPriceAfterFee
+        trade.getPriceAfterFeeFunctionAbi,
+        trade.getPriceAfterFeeFunctionName
     )
     const {
         hash,
@@ -44,24 +61,20 @@ export default function BuyModal({
         isConfirmed,
         writeDolphinContract
     } = useDolphinWriteContract(
-        buyAbi,
-        function_names.buy,
-        [asset?.ipAsset.id, BigInt(Number(amount) * 1e18)],
+        trade.abi,
+        trade.functionName,
+        [asset?.ipAsset.id, BigInt(1 * 1e18)],
         result
     )
 
-    const handleGetPrice: FocusEventHandler<HTMLInputElement> = (event) => {
-        const value = event.target.value;
-        if (value) {
-            read([asset?.ipAsset.id, BigInt(Number(value) * 1e18)])
-            setAmount(Number(value));
-        }
-    }
+    useEffect(() => {
+        read([asset?.ipAsset.id, BigInt(1 * 1e18)])
+    }, [])
 
     return <Dialog.Root open={open}>
         <Dialog.Content maxWidth="450px">
             <Dialog.Title className="relative">
-                Buy shares
+                {trade.modalTitle}
                 <CrossCircledIcon
                     onClick={() => {
                         onClose && onClose()
@@ -72,14 +85,7 @@ export default function BuyModal({
             <Dialog.Description size="2" mb="4">
                 <div className="border-t pt-4 space-y-2">
                     <p>IP ID: {asset?.ipAsset.id}</p>
-                    <p>Set Custom Amount</p>
-                    <TextField.Root type="number"
-                        onBlur={handleGetPrice}
-                    >
-                        <TextField.Slot side="right">
-                            Share(s)
-                        </TextField.Slot>
-                    </TextField.Root>
+                    <p><strong className="uppercase">{method}</strong> 1 share</p>
                     <div className="text-right space-y-2">
                         {/* <p>Insufficient Balance</p> */}
                         <p>Balance: {balance?.formatted.slice(0, 6)} ETH</p>
@@ -106,7 +112,10 @@ export default function BuyModal({
                         }
                         onClick={writeDolphinContract}
                         disabled={!result || isLoading || isConfirming || isPending}
-                    >{isConfirming || isPending ? 'Waiting for Transaction...' : 'Confirm'}</Button>
+                    >{isConfirming || isPending
+                        ? 'Waiting for Transaction...'
+                        : <strong className="uppercase">{method}</strong>}
+                    </Button>
                     <p>Share price will go up when more people buy. And you can sell it anytime.</p>
                 </div>
             </Dialog.Description>

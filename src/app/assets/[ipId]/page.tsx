@@ -7,16 +7,15 @@ import LoadingBlock from "./components/LoadingBlock";
 import Detail from "./components/Detail";
 import LicenseType from "./components/LicenseType";
 import RelationshipGraph from "./components/RelationshipGraph";
-import BuyModal from "@/components/BuyModal";
+import TradeModal from "@/components/TradeModal";
 import { useState } from "react";
 import RemixModal from "@/components/RemixModal";
-import SellModal from "@/components/SellModal";
 
 export default function Page({ params: { ipId } }: { params: { ipId: string } }) {
     const { data, isLoading } = useAssetWithNft(ipId);
     const [open, setOpen] = useState(false);
     const [openRemixModal, setOpenRemixModal] = useState(false);
-    const [openSellModal, setSellModal] = useState(false);
+    const [currentMethod, setCurrentMethod] = useState<'buy' | 'sell'>('buy');
     if (isLoading) return <LoadingBlock />;
     return (
         <main className="flex flex-col items-center justify-between">
@@ -34,11 +33,17 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                             onClick={() => setOpenRemixModal(true)}
                         >Remix</Button>
                         <Button
-                            onClick={() => setOpen(true)}
+                            onClick={() => {
+                                setOpen(true)
+                                setCurrentMethod('buy')
+                            }}
                             className="w-[150px] py-5 cursor-pointer"
                         >Buy</Button>
                         <Button
-                            onClick={() => setSellModal(true)}
+                            onClick={() => {
+                                setOpen(true)
+                                setCurrentMethod('sell')
+                            }}
                             className="w-[150px] py-5 cursor-pointer"
                         >Sell</Button>
                     </div>
@@ -109,8 +114,9 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                     ) : null}
                 </div>
             </section>
-            <BuyModal
+            <TradeModal
                 open={open}
+                method={currentMethod}
                 asset={data}
                 onClose={() => setOpen(false)}
             />
@@ -118,11 +124,6 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                 open={openRemixModal}
                 asset={data as any}
                 onClose={() => setOpenRemixModal(false)}
-            />
-            <SellModal
-                open={openSellModal}
-                asset={data as any}
-                onClose={() => setSellModal(false)}
             />
         </main>
     )
