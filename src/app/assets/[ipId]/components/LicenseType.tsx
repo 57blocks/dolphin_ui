@@ -1,6 +1,6 @@
 import { Address } from "viem";
 import useLicense from "../hooks/useLicense";
-import { LicenseTerm } from "@/story/types";
+import { LicenseTerm, LicenseWithTerms } from "@/story/types";
 import { useState } from "react";
 import AnimateHeightBlock from "@/components/AnimateHeightBlock";
 import { ChevronDownIcon } from "@radix-ui/themes";
@@ -89,7 +89,13 @@ function LicenseCollapse({ licenseTypeRule }: { licenseTypeRule: any }) {
     </div >
 }
 
-export default function LicenseType({ ipId }: { ipId?: Address }) {
+export default function LicenseType({
+    ipId,
+    afterLoading
+}: {
+    ipId?: Address,
+    afterLoading?: (data: LicenseWithTerms[]) => void
+}) {
     if (!ipId) return null;
     const { data, isLoading } = useLicense(ipId);
     if (isLoading) return <div className="animate-pulse">
@@ -99,6 +105,8 @@ export default function LicenseType({ ipId }: { ipId?: Address }) {
     if (!data || data.length === 0) return <div className="text-gray-500">
         No License
     </div>
+
+    afterLoading && afterLoading(data);
 
     return data.map((d, idx) => {
         const licenseType = checkLicenseType(d.licenseTerms);

@@ -16,6 +16,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
     const [open, setOpen] = useState(false);
     const [openRemixModal, setOpenRemixModal] = useState(false);
     const [currentMethod, setCurrentMethod] = useState<'buy' | 'sell'>('buy');
+    const [licenses, setLicenses] = useState<any>([])
     if (isLoading) return <LoadingBlock />;
     return (
         <main className="flex flex-col items-center justify-between">
@@ -89,7 +90,10 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                     <div className="w-full rounded-4xl bg-neutral-50 p-8 shadow-sm">
                         <h2 className="mb-4 text-2xl font-bold">Licensing</h2>
                         <h3 className="mb-2 text-lg font-bold">License Types</h3>
-                        <LicenseType ipId={data?.ipAsset.id} />
+                        <LicenseType
+                            ipId={data?.ipAsset.id}
+                            afterLoading={(data) => setLicenses(data)}
+                        />
                     </div>
                     <div className="w-full rounded-4xl bg-neutral-50 p-8 shadow-sm">
                         <h2 className="text-2xl font-bold">Details</h2>
@@ -123,6 +127,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
             <RemixModal
                 open={openRemixModal}
                 asset={data as any}
+                license={licenses[0]}
                 onClose={() => setOpenRemixModal(false)}
             />
         </main>

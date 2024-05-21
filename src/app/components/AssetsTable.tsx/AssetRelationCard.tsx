@@ -48,11 +48,6 @@ export default function AssetRelationCard({
                 method="buy"
                 onClose={() => setBuyModal(false)}
             />
-            <RemixModal
-                open={openRemixModal}
-                asset={asset as any}
-                onClose={() => setOpenRemixModal(false)}
-            />
         </div>
     )
 }

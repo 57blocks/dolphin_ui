@@ -19,7 +19,10 @@ export default function useLicense(ipId: Address) {
             })
             const licenses = await Promise.allSettled(promises).then((res) => {
                 const result = res.map(({ value }: any) => {
-                    return value.data
+                    return {
+                        ...value.data,
+                        ipId
+                    }
                 })
                 return result
             });
