@@ -26,7 +26,7 @@ export async function getResource(
                 },
             }
         )
-        if (res.ok) {
+        if (res) {
             return res.json()
         }
     } catch (error) {
