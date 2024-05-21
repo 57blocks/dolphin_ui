@@ -1,7 +1,6 @@
 import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
-import BuyModal from "@/components/TradeModal";
+import TradeModal from "@/components/TradeModal";
 import RemixModal from "@/components/RemixModal";
-import SellModal from "@/components/SellModal";
 import formatAddress from "@/utils/formatAddress";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
@@ -43,8 +42,10 @@ export default function AssetRelationCard({
                     onClick={() => setOpenRemixModal(true)}
                 >Remix</div>
             </div>
-            <BuyModal
+            <TradeModal
                 open={openBuyModal}
+                asset={asset as any}
+                method="buy"
                 onClose={() => setBuyModal(false)}
             />
             <RemixModal
