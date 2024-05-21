@@ -2,6 +2,7 @@ import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
 import BuyModal from "@/components/BuyModal";
 import RemixModal from "@/components/RemixModal";
 import SellModal from "@/components/SellModal";
+import formatAddress from "@/utils/formatAddress";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useState } from "react";
@@ -12,7 +13,6 @@ export default function AssetRelationCard({
     asset: NftWithAsset
 }) {
     const [openBuyModal, setBuyModal] = useState(false);
-    const [openSellModal, setSellModal] = useState(false);
     const [openRemixModal, setOpenRemixModal] = useState(false);
     return (
         <div className="border bg-white rounded-lg">
@@ -26,7 +26,7 @@ export default function AssetRelationCard({
                     <h4 className="text-lg font-medium hover:text-indigo-600">
                         <Link href={`/assets/${asset.ipAsset.id}`}>{asset.name || 'Untitled'}</Link>
                     </h4>
-                    <p>Token ID: {asset.token_id}</p>
+                    <p>IP ID: {formatAddress(asset.ipAsset.id)}</p>
                     <h4 className="text-lg font-bold text-green-600">$10-$20</h4>
                 </div>
                 <div className="flex justify-center items-center ml-4">
@@ -35,22 +35,14 @@ export default function AssetRelationCard({
             </div>
             <div className="border-t flex justify-around">
                 <div
-                    className="py-1 text-indigo-600 cursor-pointer text-center flex-1"
+                    className="py-1 text-indigo-600 border-r cursor-pointer text-center flex-1"
                     onClick={() => setBuyModal(true)}
                 >Buy</div>
-                <div
-                    className="py-1 border-l border-r text-indigo-600 cursor-pointer text-center flex-1"
-                    onClick={() => setSellModal(true)}
-                >Sell</div>
                 <div
                     className="py-1 text-indigo-600 cursor-pointer text-center flex-1"
                     onClick={() => setOpenRemixModal(true)}
                 >Remix</div>
             </div>
-            <SellModal
-                open={openSellModal}
-                onClose={() => setSellModal(false)}
-            />
             <BuyModal
                 open={openBuyModal}
                 onClose={() => setBuyModal(false)}
