@@ -12,7 +12,7 @@ import Link from "next/link";
 
 interface IProps {
     open: boolean,
-    method: 'buy' | 'sell'
+    method?: 'buy' | 'sell'
     asset?: NftWithAsset | null
     onClose?: () => void
 }
