@@ -16,7 +16,15 @@ export default function NftCards() {
         <SkeletonCard number={6} />
     </div>
     return <>
-        <h2 className="text-2xl font-bold">Racking</h2>
+        <div className="flex space-x-4">
+            <h2 className="text-2xl font-bold py-4">
+                <Link href='/'>Assets Viewer</Link>
+            </h2>
+            <h2 className="text-2xl font-bold text-indigo-500 relative py-4 flex flex-col items-center">
+                My Assets
+                <p className="h-[2px] w-1/2 bg-indigo-500 mt-4"></p>
+            </h2>
+        </div>
         <p className="text-gray-500 mt-4">Follow the steps to register your intellectual property</p>
         <div className="border rounded-md mt-4">
             <div className="p-4 font-bold relative">
