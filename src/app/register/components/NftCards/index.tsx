@@ -18,7 +18,7 @@ export default function NftCards() {
     return <>
         <div className="flex space-x-4">
             <h2 className="text-2xl font-bold py-4">
-                <Link href='/'>Assets Viewer</Link>
+                <Link href='/'>Market Place</Link>
             </h2>
             <h2 className="text-2xl font-bold text-indigo-500 relative py-4 flex flex-col items-center">
                 My Assets

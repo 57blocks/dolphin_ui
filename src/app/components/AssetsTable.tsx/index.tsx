@@ -24,7 +24,7 @@ export default function AssetsTable() {
     return <>
         <div className="flex space-x-4">
             <h2 className="text-2xl font-bold text-indigo-500 relative py-4 flex flex-col items-center">
-                Assets Viewer
+                Market Place
                 <p className="h-[2px] w-1/2 bg-indigo-500 mt-4"></p>
             </h2>
             <h2 className="text-2xl font-bold py-4">
