@@ -15,7 +15,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
     const { data, isLoading } = useAssetWithNft(ipId);
     const [open, setOpen] = useState(false);
     const [openRemixModal, setOpenRemixModal] = useState(false);
-    const [currentMethod, setCurrentMethod] = useState<'buy' | 'sell'>('buy');
+    const [openSellModal, setOpenSellModal] = useState(false);
     const [licenses, setLicenses] = useState<any>([])
     if (isLoading) return <LoadingBlock />;
     return (
@@ -36,14 +36,12 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                         <Button
                             onClick={() => {
                                 setOpen(true)
-                                setCurrentMethod('buy')
                             }}
                             className="w-[150px] py-5 cursor-pointer"
                         >Buy</Button>
                         <Button
                             onClick={() => {
-                                setOpen(true)
-                                setCurrentMethod('sell')
+                                setOpenSellModal(true)
                             }}
                             className="w-[150px] py-5 cursor-pointer"
                         >Sell</Button>
@@ -120,9 +118,15 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
             </section>
             <TradeModal
                 open={open}
-                method={currentMethod}
+                method='buy'
                 asset={data}
                 onClose={() => setOpen(false)}
+            />
+            <TradeModal
+                open={openSellModal}
+                method='sell'
+                asset={data}
+                onClose={() => setOpenSellModal(false)}
             />
             <RemixModal
                 open={openRemixModal}

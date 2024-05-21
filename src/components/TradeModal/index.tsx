@@ -2,7 +2,7 @@ import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
 import { buyAbi, getBuyPriceAfterFeeAbi, getSellPriceAfterFeeAbi, sellAbi } from "@/dolphin/abis";
 import { function_names } from "@/dolphin/constants";
 import { useDolphinReadContract } from "@/dolphin/readContract";
-import { useDolphinWriteContract } from "@/dolphin/writeContract";
+import { DolphinWriteContractProps, useDolphinWriteContract } from "@/dolphin/writeContract";
 import { CrossCircledIcon } from "@radix-ui/react-icons";
 import { Button, Dialog } from "@radix-ui/themes";
 import { useEffect } from "react";
@@ -53,6 +53,17 @@ export default function TradeModal({
         trade.getPriceAfterFeeFunctionAbi,
         trade.getPriceAfterFeeFunctionName
     )
+
+    let writeContractArgs: DolphinWriteContractProps = {
+        abi: trade.abi,
+        functionName: trade.functionName,
+        args: [asset?.ipAsset.id],
+    }
+
+    if (method === 'buy') {
+        writeContractArgs.value = result
+    }
+
     const {
         hash,
         error,
@@ -60,18 +71,13 @@ export default function TradeModal({
         isConfirming,
         isConfirmed,
         writeDolphinContract
-    } = useDolphinWriteContract(
-        trade.abi,
-        trade.functionName,
-        [asset?.ipAsset.id, BigInt(1 * 1e18)],
-        result
-    )
+    } = useDolphinWriteContract(writeContractArgs)
 
     useEffect(() => {
-        read([asset?.ipAsset.id, BigInt(1 * 1e18)])
+        read([asset?.ipAsset.id])
     }, [])
 
-    return <Dialog.Root open={open}>
+    return <Dialog.Root open={open} key={method}>
         <Dialog.Content maxWidth="450px">
             <Dialog.Title className="relative">
                 {trade.modalTitle}

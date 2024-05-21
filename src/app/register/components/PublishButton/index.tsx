@@ -20,11 +20,11 @@ export default function PublishButton({
         isConfirming,
         isConfirmed,
         writeDolphinContract
-    } = useDolphinWriteContract(
-        listAbi,
-        function_names.list,
-        [ipId]
-    )
+    } = useDolphinWriteContract({
+        abi: listAbi,
+        functionName: function_names.list,
+        args: [ipId]
+    })
     const btnText = () => {
         if (isPending) return 'Confirming...';
         if (isConfirming) return 'Waiting for confirmation...';

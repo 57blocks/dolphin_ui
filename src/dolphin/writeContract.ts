@@ -1,12 +1,19 @@
 import { Abi, Address } from "viem"
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi"
 
-export const useDolphinWriteContract = (
+export interface DolphinWriteContractProps {
     abi: Abi,
     functionName: string,
     args: any[],
     value?: bigint
-) => {
+}
+
+export const useDolphinWriteContract = ({
+    abi,
+    functionName,
+    args,
+    value
+}: DolphinWriteContractProps) => {
     const {
         data: hash,
         error,

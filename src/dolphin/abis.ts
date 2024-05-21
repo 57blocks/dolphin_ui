@@ -2,37 +2,33 @@ import { function_names } from "./constants"
 
 export const buyAbi = [
     {
-        inputs: [{
-            internalType: "address",
-            name: "ipId",
-            type: "address"
-        }, {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256"
-        }],
-        name: function_names.buy,
-        outputs: [],
-        stateMutability: "payable",
-        type: "function"
-    }
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "ipId",
+                "type": "address"
+            }
+        ],
+        "name": "buy",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
 ] as const
 
 export const sellAbi = [
     {
-        inputs: [{
-            internalType: "address",
-            name: "ipId",
-            type: "address"
-        }, {
-            internalType: "uint256",
-            name: "amount",
-            type: "uint256"
-        }],
-        name: function_names.sell,
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function"
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "ipId",
+                "type": "address"
+            }
+        ],
+        "name": "sell",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     }
 ] as const
 
@@ -53,43 +49,43 @@ export const listAbi = [
 
 export const getBuyPriceAfterFeeAbi = [
     {
-        "inputs": [{
-            "internalType": "address",
-            "name": "ipId",
-            "type": "address"
-        }, {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-        }],
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "ipId",
+                "type": "address"
+            }
+        ],
         "name": "getBuyPriceAfterFee",
-        "outputs": [{
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-        }],
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
         "stateMutability": "view",
         "type": "function"
-    }
+    },
 ] as const
 
 export const getSellPriceAfterFeeAbi = [
     {
-        "inputs": [{
-            "internalType": "address",
-            "name": "ipId",
-            "type": "address"
-        }, {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-        }],
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "ipId",
+                "type": "address"
+            }
+        ],
         "name": "getSellPriceAfterFee",
-        "outputs": [{
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-        }],
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
         "stateMutability": "view",
         "type": "function"
     }

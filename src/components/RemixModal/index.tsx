@@ -48,15 +48,15 @@ export default function RemixModal({
         isConfirming,
         isConfirmed,
         writeDolphinContract
-    } = useDolphinWriteContract(
-        remixAbi,
-        function_names.remix,
-        [
+    } = useDolphinWriteContract({
+        abi: remixAbi,
+        functionName: function_names.remix,
+        args: [
             asset.ipAsset.id,
             license.licenseTemplate,
             license.id
-        ],
-    )
+        ]
+    })
     return <Dialog.Root open={open}>
         <Dialog.Content maxWidth="450px">
             <Dialog.Title className="relative">
