@@ -1,6 +1,6 @@
 'use client'
 
-import AssetsTable from "./components/AssetsTable.tsx";
+import AssetsTable from "./components/AssetsTable";
 
 export default function Home() {
   return (
