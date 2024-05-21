@@ -1,18 +1,13 @@
 import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
-import TradeModal from "@/components/TradeModal";
-import RemixModal from "@/components/RemixModal";
 import formatAddress from "@/utils/formatAddress";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function AssetRelationCard({
     asset
 }: {
     asset: NftWithAsset
 }) {
-    const [openBuyModal, setBuyModal] = useState(false);
-    const [openRemixModal, setOpenRemixModal] = useState(false);
     return (
         <div className="border bg-white rounded-lg">
             <div className="p-2 grid grid-cols-5">
@@ -32,22 +27,16 @@ export default function AssetRelationCard({
                     <ChevronRightIcon />
                 </div>
             </div>
-            <div className="border-t flex justify-around">
-                <div
-                    className="py-1 text-indigo-600 border-r cursor-pointer text-center flex-1"
-                    onClick={() => setBuyModal(true)}
-                >Buy</div>
-                <div
-                    className="py-1 text-indigo-600 cursor-pointer text-center flex-1"
-                    onClick={() => setOpenRemixModal(true)}
-                >Remix</div>
-            </div>
-            <TradeModal
-                open={openBuyModal}
-                asset={asset as any}
-                method="buy"
-                onClose={() => setBuyModal(false)}
-            />
+            <Link href={`/assets/${asset.ipAsset.id}`}>
+                <div className="border-t flex justify-around">
+                    <div
+                        className="py-1 text-indigo-600 border-r cursor-pointer text-center flex-1"
+                    >Buy</div>
+                    <div
+                        className="py-1 text-indigo-600 cursor-pointer text-center flex-1"
+                    >Remix</div>
+                </div>
+            </Link>
         </div>
     )
 }

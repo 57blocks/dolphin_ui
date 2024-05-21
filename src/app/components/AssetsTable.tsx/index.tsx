@@ -1,7 +1,6 @@
 'use client'
 
 import useIPAssetNfts from "@/app/hooks/useIPAssetNfts";
-import Pagination from "@/components/Pagination";
 import { SkeletonTable } from "@/components/Skeletons/SkeletonTable";
 import AssetItem from "./AssetItem";
 import { useState } from "react";

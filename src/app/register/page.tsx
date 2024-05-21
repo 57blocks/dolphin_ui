@@ -1,6 +1,6 @@
 'use client'
 
-import { useAccount, useChainId, useConnect } from "wagmi";
+import { useAccount } from "wagmi";
 import NftCards from "./components/NftCards";
 
 export default function Register() {
