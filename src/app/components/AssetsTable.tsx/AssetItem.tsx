@@ -24,7 +24,7 @@ export default function AssetItem({
                 <div className="flex flex-1 ml-4 items-center">
                     <div className="w-[200px]">
                         <h4 className="text-lg font-bold hover:text-indigo-600">
-                            <Link href={`/assets/${asset.ipAsset.id}`}>{asset.name || 'Untitled'}</Link>
+                            <Link href={`/assets/${asset.ipAsset.id}`}>{asset.name || asset.ipAsset.nftMetadata.name || 'Untitled'}</Link>
                         </h4>
                         <p>Token ID: {asset.token_id}</p>
                     </div>

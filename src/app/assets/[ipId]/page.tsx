@@ -10,11 +10,13 @@ import RelationshipGraph from "./components/RelationshipGraph";
 import BuyModal from "@/components/BuyModal";
 import { useState } from "react";
 import RemixModal from "@/components/RemixModal";
+import SellModal from "@/components/SellModal";
 
 export default function Page({ params: { ipId } }: { params: { ipId: string } }) {
     const { data, isLoading } = useAssetWithNft(ipId);
     const [open, setOpen] = useState(false);
     const [openRemixModal, setOpenRemixModal] = useState(false);
+    const [openSellModal, setSellModal] = useState(false);
     if (isLoading) return <LoadingBlock />;
     return (
         <main className="flex flex-col items-center justify-between">
@@ -35,6 +37,10 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                             onClick={() => setOpen(true)}
                             className="w-[150px] py-5 cursor-pointer"
                         >Buy</Button>
+                        <Button
+                            onClick={() => setSellModal(true)}
+                            className="w-[150px] py-5 cursor-pointer"
+                        >Sell</Button>
                     </div>
                 </div>
                 <div className="col-span-12 grid grid-cols-3 rounded-4xl bg-neutral-50 shadow-sm p-4">
@@ -112,6 +118,11 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                 open={openRemixModal}
                 asset={data as any}
                 onClose={() => setOpenRemixModal(false)}
+            />
+            <SellModal
+                open={openSellModal}
+                asset={data as any}
+                onClose={() => setSellModal(false)}
             />
         </main>
     )

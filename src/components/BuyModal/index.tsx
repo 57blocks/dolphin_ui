@@ -94,7 +94,7 @@ export default function BuyModal({
                     {
                         error && (<div>
                             <h4 className="text-red-500 font-bold">Transaction Failed</h4>
-                            <pre>{error.message}</pre>
+                            <pre className="w-full overflow-auto border p-2 rounded-lg">{error.message}</pre>
                         </div>)
                     }
                     <div className="border-b border-dashed"></div>

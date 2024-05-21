@@ -3,5 +3,6 @@ export const function_names = {
     buy: 'buy',
     remix: 'remix',
     list: 'list',
-    getBuyPriceAfterFee: 'getBuyPriceAfterFee'
+    getBuyPriceAfterFee: 'getBuyPriceAfterFee',
+    getSellPriceAfterFee: 'getSellPriceAfterFee'
 }
