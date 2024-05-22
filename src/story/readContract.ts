@@ -3,7 +3,7 @@ import { Abi, Address } from "viem"
 import { readContract } from '@wagmi/core'
 import { config } from "@/components/WalletConnector/wagmi.config"
 
-export const useDolphinReadContract = (
+export const useStoryReadContract = (
     abi: Abi,
     functionName: string,
 ) => {
@@ -12,7 +12,7 @@ export const useDolphinReadContract = (
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<any>()
     const contract = {
-        address: process.env.NEXT_PUBLIC_dolphin_CONTRACT as Address,
+        address: process.env.NEXT_PUBLIC_story_CONTRACT as Address,
         abi,
         functionName,
     }

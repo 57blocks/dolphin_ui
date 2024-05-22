@@ -131,7 +131,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
             <RemixModal
                 open={openRemixModal}
                 asset={data as any}
-                license={licenses[0]}
+                licenses={licenses}
                 onClose={() => setOpenRemixModal(false)}
             />
         </main>

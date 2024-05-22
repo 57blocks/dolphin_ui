@@ -1,27 +1,31 @@
+import { checkLicenseType } from "@/app/assets/[ipId]/components/LicenseType";
 import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
 import { remixAbi } from "@/dolphin/abis";
 import { function_names } from "@/dolphin/constants";
 import { useDolphinWriteContract } from "@/dolphin/writeContract";
+import { getRoyaltyPolicyAbi } from "@/story/abi";
+import { useStoryReadContract } from "@/story/readContract";
 import { LicenseWithTerms } from "@/story/types";
 import { CrossCircledIcon } from "@radix-ui/react-icons";
-import { Button, Dialog } from "@radix-ui/themes";
+import { Button, Dialog, Select } from "@radix-ui/themes";
 import clx from 'classnames'
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface IProps {
     open: boolean
-    license: LicenseWithTerms
+    licenses: LicenseWithTerms[]
     asset: NftWithAsset
     onClose?: () => void
 }
 
 export default function RemixModal({
     open,
-    license,
+    licenses,
     asset,
     onClose
 }: IProps) {
-    if (!license) return (
+    if (!licenses || !licenses.length) return (
         <Dialog.Root open={open}>
             <Dialog.Content maxWidth="450px">
                 <Dialog.Title className="relative">
@@ -35,12 +39,19 @@ export default function RemixModal({
                 </Dialog.Title>
                 <Dialog.Description size="2" mb="4">
                     <div className="border-t pt-4 space-y-2">
-                        <p>No License</p>
+                        <p>No Any License</p>
                     </div>
                 </Dialog.Description>
             </Dialog.Content>
         </Dialog.Root>
     )
+    const [selectedLicense, setSelectedLicense] = useState<LicenseWithTerms>();
+    useEffect(() => {
+        if (licenses.length) {
+            setSelectedLicense(licenses[0])
+            read(licenses[0].id)
+        }
+    }, [])
     const {
         hash,
         error,
@@ -53,10 +64,36 @@ export default function RemixModal({
         functionName: function_names.remix,
         args: [
             asset.ipAsset.id,
-            license.licenseTemplate,
-            license.id
+            selectedLicense?.licenseTemplate,
+            selectedLicense?.id
         ]
     })
+
+    const {
+        result,
+        error: royaltyPolicyErr,
+        isLoading,
+        read
+    } = useStoryReadContract(
+        getRoyaltyPolicyAbi,
+        getRoyaltyPolicyAbi[0].name
+    );
+
+    const handleChangeSelectLicense = (id: string) => {
+        const selected = licenses.find(l => l.id === id);
+        if (selected) {
+            setSelectedLicense(selected);
+            read(id);
+        }
+    }
+    const licenseOptions = licenses.map((l) => {
+        const licenseType = checkLicenseType(l.licenseTerms);
+        return {
+            ...l,
+            licenseType
+        }
+    })
+    console.log({ result })
     return <Dialog.Root open={open}>
         <Dialog.Content maxWidth="450px">
             <Dialog.Title className="relative">
@@ -81,10 +118,27 @@ export default function RemixModal({
                             <h4 className="text-lg font-medium hover:text-indigo-600">
                                 {asset?.name || 'Untitled'}
                             </h4>
-                            <p>Token ID: {asset?.token_id}</p>
+                            <p>IP ID: {asset?.ipAsset.id}</p>
                             <h4 className="text-lg font-bold text-green-600">$10-$20</h4>
                         </div>
                     </div>
+                    <p>Pick a License</p>
+                    <Select.Root
+                        value={selectedLicense?.id}
+                        onValueChange={handleChangeSelectLicense}
+                    >
+                        <Select.Trigger
+                            className="w-full"
+                            placeholder="Pick a License"
+                        />
+                        <Select.Content>
+                            {
+                                licenseOptions.map(l => <Select.Item value={l.id}>
+                                    {l.licenseType}
+                                </Select.Item>)
+                            }
+                        </Select.Content>
+                    </Select.Root>
                     <div className="text-right space-y-2">
                         <p>Conversion Price: 0.000021 ETH</p>
                     </div>

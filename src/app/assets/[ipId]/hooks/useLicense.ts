@@ -20,11 +20,13 @@ export default function useLicense(ipId: Address) {
             const licenses = await Promise.allSettled(promises).then((res) => {
                 const result = res.map(({ value }: any) => {
                     return {
-                        ...value.data,
-                        ipId
+                        data: value.data,
                     }
                 })
-                return result
+                return result.filter(r => r.data).map(d => ({
+                    ...d,
+                    ipId
+                })) as any[]
             });
             return licenses as LicenseWithTerms[];
         }

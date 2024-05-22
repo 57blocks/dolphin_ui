@@ -49,7 +49,7 @@ const LicenseRules = {
     }
 }
 
-function checkLicenseType(licensesTerms: LicenseTerm[]) {
+export function checkLicenseType(licensesTerms: LicenseTerm[]) {
     const isNonCommercial = licensesTerms.find((term) => term.trait_type === 'Commercial Use' && !term.value);
     if (isNonCommercial) return 'NonCommercial';
     const commercialRevenueShare = licensesTerms.find((term) => term.trait_type === 'Commercial Revenue Share' && term.value);
