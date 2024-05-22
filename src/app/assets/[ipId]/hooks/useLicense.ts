@@ -24,7 +24,7 @@ export default function useLicense(ipId: Address) {
                     }
                 })
                 return result.filter(r => r.data).map(d => ({
-                    ...d,
+                    ...d.data,
                     ipId
                 })) as any[]
             });

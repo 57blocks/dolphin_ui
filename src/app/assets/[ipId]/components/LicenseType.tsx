@@ -101,7 +101,6 @@ export default function LicenseType({
     if (isLoading) return <div className="animate-pulse">
         <div className="h-16 rounded-lg bg-neutral-200"></div>
     </div>
-
     if (!data || data.length === 0) return <div className="text-gray-500">
         No License
     </div>
