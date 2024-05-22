@@ -97,7 +97,7 @@ export default function LicenseType({
     afterLoading?: (data: LicenseWithTerms[]) => void
 }) {
     if (!ipId) return null;
-    const { data, isLoading } = useLicense(ipId);
+    const { result: data, isLoading } = useLicense(ipId);
     if (isLoading) return <div className="animate-pulse">
         <div className="h-16 rounded-lg bg-neutral-200"></div>
     </div>

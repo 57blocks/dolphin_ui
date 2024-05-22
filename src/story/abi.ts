@@ -78,3 +78,29 @@ export const allowanceAbi = [
         "type": "function"
     }
 ] as const
+
+export const getAttachedLicenseTermsAbi = [
+    {
+        "inputs": [{
+            "internalType": "address",
+            "name": "ipId",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+        }],
+        "name": "getAttachedLicenseTerms",
+        "outputs": [{
+            "internalType": "address",
+            "name": "licenseTemplate",
+            "type": "address"
+        }, {
+            "internalType": "uint256",
+            "name": "licenseTermsId",
+            "type": "uint256"
+        }],
+        "stateMutability": "view",
+        "type": "function"
+    }
+] as const
