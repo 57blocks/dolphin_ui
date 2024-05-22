@@ -2,8 +2,9 @@ import { checkLicenseType } from "@/app/assets/[ipId]/components/LicenseType";
 import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
 import { remixAbi } from "@/dolphin/abis";
 import { function_names } from "@/dolphin/constants";
+import { useDolphinReadContract } from "@/dolphin/readContract";
 import { useDolphinWriteContract } from "@/dolphin/writeContract";
-import { getRoyaltyPolicyAbi } from "@/story/abi";
+import { allowanceAbi, approveAbi, getRoyaltyPolicyAbi } from "@/story/abi";
 import { useStoryReadContract } from "@/story/readContract";
 import { LicenseWithTerms } from "@/story/types";
 import { CrossCircledIcon } from "@radix-ui/react-icons";
@@ -11,6 +12,8 @@ import { Button, Dialog, Select } from "@radix-ui/themes";
 import clx from 'classnames'
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { maxUint256, numberToHex } from "viem";
+import { useAccount } from "wagmi";
 
 interface IProps {
     open: boolean
@@ -49,17 +52,18 @@ export default function RemixModal({
 
     const {
         result,
-        error: royaltyPolicyErr,
         isLoading: royaltyPolicyLoading,
         read
     } = useStoryReadContract(
         getRoyaltyPolicyAbi,
         getRoyaltyPolicyAbi[0].name
     );
+
+    const { address } = useAccount()
     useEffect(() => {
         if (licenses.length) {
             setSelectedLicense(licenses[0])
-            read([21])
+            read([licenses[0].id])
         }
     }, [])
     const {
@@ -79,6 +83,32 @@ export default function RemixModal({
         ]
     })
 
+    const {
+        hash: approveHash,
+        isPending: approveLoading,
+        isConfirming: approveIsConfirming,
+        isConfirmed: approveIsConfirmed,
+        writeDolphinContract: Approve
+    } = useDolphinWriteContract({
+        abi: approveAbi,
+        functionName: function_names.approve,
+        address: result ? result[3] : '',
+        args: [
+            process.env.NEXT_PUBLIC_dolphin_CONTRACT,
+            numberToHex(maxUint256)
+        ]
+    })
+
+    const {
+        result: allowance,
+        isLoading: allowanceChecking,
+        read: CheckAllowance
+    } = useDolphinReadContract(
+        allowanceAbi,
+        allowanceAbi[0].name,
+        result ? result[3] : '',
+    )
+
     const handleChangeSelectLicense = (id: string) => {
         const selected = licenses.find(l => l.id === id);
         if (selected) {
@@ -94,6 +124,8 @@ export default function RemixModal({
         }
     })
     const mintingFee = result ? Number(result[2]) / 1e18 : 0
+    const showApproveBtn = mintingFee > 0 && Number(allowance) < mintingFee;
+    const disabledMintBtn = (isConfirming || isPending) && !showApproveBtn;
     return <Dialog.Root open={open}>
         <Dialog.Content maxWidth="450px">
             <Dialog.Title className="relative">
@@ -152,7 +184,7 @@ export default function RemixModal({
                                 {result[0]}
                             </Link></p>
                             <p>Royalty Data: {result[1]}</p>
-                            <p>Minting Fee: {royaltyPolicyLoading ? 'Loading...' : <span className="font-bold text-green-600">{mintingFee} ETH</span>} </p>
+                            <p>Minting Fee: {royaltyPolicyLoading ? 'Loading...' : <span className="font-bold text-green-600">{mintingFee} MERC20</span>} </p>
                             <p>
                                 Currency: <Link
                                     className="hover:text-indigo-500"
@@ -162,18 +194,25 @@ export default function RemixModal({
                                     {result[3]}
                                 </Link>
                             </p>
-                            <Button
-                                className={
-                                    clx("w-full cursor-pointer", {
-                                        'animate-pulse': isConfirming || isPending
-                                    })
-                                }
-                                onClick={writeDolphinContract}
-                                disabled={isConfirming || isPending || mintingFee !== 0}
-                            >{isConfirming || isPending
-                                ? 'Waiting for Transaction...'
-                                : 'Approve'}
-                            </Button>
+                            {
+                                mintingFee !== 0 && (
+                                    <p>Allowance: {
+                                        allowance !== undefined
+                                            ? Number(allowance).toString()
+                                            : <Button
+                                                onClick={() => CheckAllowance([
+                                                    address,
+                                                    process.env.NEXT_PUBLIC_dolphin_CONTRACT
+                                                ])}
+                                                size='1'
+                                            >
+                                                {
+                                                    allowanceChecking ? 'Checking...' : 'Check Allowance'
+                                                }
+                                            </Button>
+                                    }</p>
+                                )
+                            }
                         </div>
                     }
                     {
@@ -189,18 +228,40 @@ export default function RemixModal({
                         </div>)
                     }
                     <div className="border-b border-dashed"></div>
-                    <Button
-                        className={
-                            clx("w-full cursor-pointer", {
-                                'animate-pulse': isConfirming || isPending
-                            })
+                    <div className="flex space-x-1">
+                        {
+                            showApproveBtn && (
+                                <Button
+                                    className={
+                                        clx("flex-1 cursor-pointer", {
+                                            'animate-pulse': approveIsConfirming || approveLoading
+                                        })
+                                    }
+                                    onClick={Approve}
+                                    disabled={approveIsConfirming || approveLoading}
+                                >
+                                    {
+                                        approveIsConfirming || approveLoading
+                                            ? 'Approving...'
+                                            : 'Approve'
+                                    }
+                                </Button>
+                            )
                         }
-                        onClick={writeDolphinContract}
-                        disabled={isConfirming || isPending || mintingFee !== 0}
-                    >{isConfirming || isPending
-                        ? 'Waiting for Transaction...'
-                        : 'Mint & Convert'}
-                    </Button>
+                        <Button
+                            className={
+                                clx("flex-1 cursor-pointer", {
+                                    'animate-pulse': isConfirming || isPending
+                                })
+                            }
+                            onClick={writeDolphinContract}
+                            disabled={disabledMintBtn}
+                        >{isConfirming || isPending
+                            ? 'Waiting for Transaction...'
+                            : 'Mint & Convert'}
+                        </Button>
+                    </div>
+
                     <p>IP Asset Derivative Keep the Same As Parent</p>
                 </div>
             </Dialog.Description>

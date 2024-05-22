@@ -4,5 +4,6 @@ export const function_names = {
     remix: 'remix',
     list: 'list',
     getBuyPriceAfterFee: 'getBuyPriceAfterFee',
-    getSellPriceAfterFee: 'getSellPriceAfterFee'
+    getSellPriceAfterFee: 'getSellPriceAfterFee',
+    approve: 'approve'
 }
