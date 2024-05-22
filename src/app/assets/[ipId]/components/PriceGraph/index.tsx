@@ -8,6 +8,9 @@ export default function PriceGraph() {
         const myChart = echarts.init(ref.current);
 
         myChart.setOption({
+            legend: {
+                data: ['Standard Line']
+            },
             xAxis: {
                 type: 'category',
                 data: priceData.x
@@ -26,6 +29,7 @@ export default function PriceGraph() {
             },
             series: [
                 {
+                    name: 'Standard Line',
                     data: priceData.y,
                     type: 'line',
                     itemStyle: {
