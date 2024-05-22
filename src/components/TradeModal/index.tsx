@@ -30,14 +30,14 @@ export default function TradeModal({
 
     const tradeMethod = {
         buy: {
-            modalTitle: 'Buy shares',
+            modalTitle: 'Buy FIN',
             abi: buyAbi,
             functionName: function_names.buy,
             getPriceAfterFeeFunctionAbi: getBuyPriceAfterFeeAbi,
             getPriceAfterFeeFunctionName: function_names.getBuyPriceAfterFee
         },
         sell: {
-            modalTitle: 'Sell shares',
+            modalTitle: 'Sell FIN',
             abi: sellAbi,
             functionName: function_names.sell,
             getPriceAfterFeeFunctionAbi: getSellPriceAfterFeeAbi,

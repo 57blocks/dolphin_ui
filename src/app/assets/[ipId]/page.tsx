@@ -10,6 +10,7 @@ import RelationshipGraph from "./components/RelationshipGraph";
 import TradeModal from "@/components/TradeModal";
 import { useState } from "react";
 import RemixModal from "@/components/RemixModal";
+import PriceGraph from "./components/PriceGraph";
 
 export default function Page({ params: { ipId } }: { params: { ipId: string } }) {
     const { data, isLoading } = useAssetWithNft(ipId);
@@ -114,6 +115,12 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                             self={data?.ipAsset}
                         />
                     ) : null}
+                </div>
+                <div
+                    className='grid grid-cols-12 col-span-12 gap-4 overflow-hidden rounded-4xl bg-neutral-50 shadow-sm p-8'
+                >
+                    <h2 className="col-span-12 text-2xl font-bold">Current Position in Price Curve</h2>
+                    <PriceGraph />
                 </div>
             </section>
             <TradeModal
