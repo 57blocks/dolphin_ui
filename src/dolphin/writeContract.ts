@@ -22,13 +22,13 @@ export const useDolphinWriteContract = ({
     } = useWriteContract()
     function writeDolphinContract() {
         console.log(args)
-        // writeContract({
-        //     address: process.env.NEXT_PUBLIC_dolphin_CONTRACT as Address,
-        //     abi,
-        //     functionName,
-        //     args,
-        //     value,
-        // })
+        writeContract({
+            address: process.env.NEXT_PUBLIC_dolphin_CONTRACT as Address,
+            abi,
+            functionName,
+            args,
+            value,
+        })
     }
     const { isLoading: isConfirming, isSuccess: isConfirmed } =
         useWaitForTransactionReceipt({

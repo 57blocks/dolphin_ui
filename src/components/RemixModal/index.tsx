@@ -46,10 +46,20 @@ export default function RemixModal({
         </Dialog.Root>
     )
     const [selectedLicense, setSelectedLicense] = useState<LicenseWithTerms>();
+
+    const {
+        result,
+        error: royaltyPolicyErr,
+        isLoading: royaltyPolicyLoading,
+        read
+    } = useStoryReadContract(
+        getRoyaltyPolicyAbi,
+        getRoyaltyPolicyAbi[0].name
+    );
     useEffect(() => {
         if (licenses.length) {
             setSelectedLicense(licenses[0])
-            read(licenses[0].id)
+            read([21])
         }
     }, [])
     const {
@@ -69,21 +79,11 @@ export default function RemixModal({
         ]
     })
 
-    const {
-        result,
-        error: royaltyPolicyErr,
-        isLoading,
-        read
-    } = useStoryReadContract(
-        getRoyaltyPolicyAbi,
-        getRoyaltyPolicyAbi[0].name
-    );
-
     const handleChangeSelectLicense = (id: string) => {
         const selected = licenses.find(l => l.id === id);
         if (selected) {
             setSelectedLicense(selected);
-            read(id);
+            read([id]);
         }
     }
     const licenseOptions = licenses.map((l) => {
@@ -93,7 +93,7 @@ export default function RemixModal({
             licenseType
         }
     })
-    console.log({ result })
+    const mintingFee = result ? Number(result[2]) / 1e18 : 0
     return <Dialog.Root open={open}>
         <Dialog.Content maxWidth="450px">
             <Dialog.Title className="relative">
@@ -133,15 +133,49 @@ export default function RemixModal({
                         />
                         <Select.Content>
                             {
-                                licenseOptions.map(l => <Select.Item value={l.id}>
+                                licenseOptions.map(l => <Select.Item
+                                    value={l.id}
+                                    key={l.id}
+                                >
                                     {l.licenseType}
                                 </Select.Item>)
                             }
                         </Select.Content>
                     </Select.Root>
-                    <div className="text-right space-y-2">
-                        <p>Conversion Price: 0.000021 ETH</p>
-                    </div>
+                    {
+                        result && <div className="space-y-2">
+                            <p>Royalty Policy: <Link
+                                className="hover:text-indigo-500"
+                                target="_blank"
+                                href={`https://sepolia.etherscan.io/address/${result[0]}`}
+                            >
+                                {result[0]}
+                            </Link></p>
+                            <p>Royalty Data: {result[1]}</p>
+                            <p>Minting Fee: {royaltyPolicyLoading ? 'Loading...' : <span className="font-bold text-green-600">{mintingFee} ETH</span>} </p>
+                            <p>
+                                Currency: <Link
+                                    className="hover:text-indigo-500"
+                                    target="_blank"
+                                    href={`https://sepolia.etherscan.io/address/${result[3]}`}
+                                >
+                                    {result[3]}
+                                </Link>
+                            </p>
+                            <Button
+                                className={
+                                    clx("w-full cursor-pointer", {
+                                        'animate-pulse': isConfirming || isPending
+                                    })
+                                }
+                                onClick={writeDolphinContract}
+                                disabled={isConfirming || isPending || mintingFee !== 0}
+                            >{isConfirming || isPending
+                                ? 'Waiting for Transaction...'
+                                : 'Approve'}
+                            </Button>
+                        </div>
+                    }
                     {
                         hash && <p>Transaction Hash: <Link className=" text-indigo-500" target="_blank" href={`https://sepolia.etherscan.io/tx/${hash}`}>{hash}</Link></p>
                     }
@@ -162,7 +196,7 @@ export default function RemixModal({
                             })
                         }
                         onClick={writeDolphinContract}
-                        disabled={isConfirming || isPending}
+                        disabled={isConfirming || isPending || mintingFee !== 0}
                     >{isConfirming || isPending
                         ? 'Waiting for Transaction...'
                         : 'Mint & Convert'}
