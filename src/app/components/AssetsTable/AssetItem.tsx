@@ -8,14 +8,26 @@ import Link from "next/link";
 import formatAddress from "@/utils/formatAddress";
 import Image from 'next/image';
 import ImgPlaceholder from '@/../public/images/imagePlaceholder.png'
-import { Asset } from "@/story/types";
+import { Asset, GraphDetial } from "@/story/types";
 
 export default function AssetItem({
-    asset
+    asset,
+    ips
 }: {
-    asset: Asset
+    asset: Asset,
+    ips?: GraphDetial[]
 }) {
     const [open, setOpen] = useState(false);
+    const [prices, setPrices] = useState<number[]>([]);
+    const handlePrices = () => {
+        if (prices.length) {
+            if (prices.length > 1) {
+                return `${prices[0].toFixed(6)}-${prices[prices.length - 1].toFixed(6)}`
+            }
+            return prices[0].toFixed(5)
+        }
+        return 0
+    }
     return (
         <li className="odd:bg-gray-100 rounded-lg">
             <div className="flex justify-between items-center p-4">
@@ -35,12 +47,14 @@ export default function AssetItem({
                     </div>
                     <div className="h-[30px] w-[1px] bg-gray-300 ml-4"></div>
                     <div className="flex ml-4 basis-1/2 flex-1 justify-between items-center">
-                        <div>
-                            <h4 className="text-lg font-bold text-green-600">$10-$20</h4>
+                        <div className="w-1/3">
+                            <h4 className="text-lg font-bold text-green-600">
+                                {handlePrices()} ETH
+                            </h4>
                             <p>Current Price</p>
                         </div>
                         <div>
-                            <h4 className="text-lg font-medium">[0, 1, 1, 3]</h4>
+                            <h4 className="text-lg font-medium">[0.4, 0.7, 0.9]</h4>
                             <p>dPrice / dRemix</p>
                         </div>
                         <div>
@@ -66,6 +80,8 @@ export default function AssetItem({
             <AssetRelation
                 asset={asset}
                 isVisible={open}
+                ips={ips}
+                getPrice={setPrices}
             />
         </li>
     )

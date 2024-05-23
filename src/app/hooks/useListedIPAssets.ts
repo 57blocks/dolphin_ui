@@ -1,6 +1,6 @@
 import GraphQLClient from '@/graphQL/client';
 import { getResource } from '@/story/storyApi';
-import { Asset, RESOURCE_TYPE } from '@/story/types';
+import { Asset, GraphDetial, RESOURCE_TYPE } from '@/story/types';
 import { useQuery, gql } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { getAddress } from 'viem'
@@ -22,24 +22,24 @@ export default function useListedIPAssets() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<unknown>()
 
-    const { data, loading: graphQLLoaing } = useQuery(GET_POSTS, { client: GraphQLClient });
+    const { data, loading: graphQLLoaing } = useQuery<{ ips: GraphDetial[] }>(GET_POSTS, { client: GraphQLClient });
     useEffect(() => {
         fetchIpAssets()
     }, [data])
     const fetchIpAssets = async () => {
         setLoading(true);
         try {
-            const remixedIpIds = data.ips
+            const remixedIpIds = data?.ips
                 .reduce((prev: any, next: any) => prev.concat(...next.remixs), [])
                 .map((r: any) => r.childIpId)
-            const queryIps = data.ips.filter((ip: any) => !remixedIpIds.includes(ip.ipId))
-            const promises = queryIps.map(async (ip: any) => {
+            const queryIps = data?.ips.filter((ip: any) => !remixedIpIds.includes(ip.ipId))
+            const promises = queryIps ? queryIps.map(async (ip: any) => {
                 const data = await getResource(
                     RESOURCE_TYPE.ASSET,
                     getAddress(ip.ipId)
                 )
                 return data.data;
-            })
+            }) : []
 
             const ipAssets = await Promise.allSettled(promises).then((res) => {
                 const result = res.map(({ value }: any) => {
@@ -58,6 +58,7 @@ export default function useListedIPAssets() {
     return {
         isLoading: graphQLLoaing || loading,
         error,
-        ipAssets
+        ipAssets,
+        ips: data?.ips
     }
 }

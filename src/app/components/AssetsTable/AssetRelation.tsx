@@ -3,7 +3,7 @@
 import AssetRelationCard from "./AssetRelationCard";
 import { NftWithAsset, fetchNftByIpAssets } from "@/app/hooks/useIPAssetNfts";
 import { useEffect, useState } from "react";
-import { Asset, RESOURCE_TYPE } from "@/story/types";
+import { Asset, GraphDetial, RESOURCE_TYPE } from "@/story/types";
 import AnimateHeightBlock from "@/components/AnimateHeightBlock";
 import { getResource } from "@/story/storyApi";
 import { SkeletonTable } from "@/components/Skeletons/SkeletonTable";
@@ -11,6 +11,8 @@ import { SkeletonTable } from "@/components/Skeletons/SkeletonTable";
 interface IProps {
     isVisible: boolean,
     asset: Asset
+    ips?: GraphDetial[]
+    getPrice?: (prices: number[]) => void
 }
 
 const getIpAssetsByList = async (assets: Asset[]) => {
@@ -35,12 +37,22 @@ const getIpAssetsByList = async (assets: Asset[]) => {
     }
 }
 
-export default function AssetRelation({ isVisible, asset }: IProps) {
+export default function AssetRelation({
+    isVisible,
+    asset,
+    ips,
+    getPrice
+}: IProps) {
     const [isLoaded, setIsLoaded] = useState(false);
     const [grandChild, setGrandChild] = useState<Asset[]>([]);
     const [loadingGrandChild, setLoadingGrandChild] = useState(false);
     const rootAsset = asset;
     const child = rootAsset.childIpIds;
+    let allIps = [asset];
+    if (child && child.length) {
+        allIps = [asset].concat(...child, []);
+    }
+
     const getData = async () => {
         try {
             setLoadingGrandChild(true)
@@ -52,6 +64,7 @@ export default function AssetRelation({ isVisible, asset }: IProps) {
                         const childIpaIds = asset?.childIpIds;
                         if (childIpaIds) {
                             grandChildIpas.push(...childIpaIds)
+                            allIps = allIps.concat(...childIpaIds, [])
                         }
                     })
 
@@ -75,6 +88,14 @@ export default function AssetRelation({ isVisible, asset }: IProps) {
         if (isVisible) { getData() }
     }, [isVisible])
 
+    useEffect(() => {
+        if (allIps.length && ips) {
+            const prices = allIps.map((i) => Number(ips.find(ip => ip.ipId == i.id.toLowerCase())?.price) / 1e18)
+            const newPrice = prices.sort((a, b) => a - b)
+            getPrice && getPrice(newPrice);
+        }
+    }, [allIps, ips])
+
     return <AnimateHeightBlock
         isVisible={isVisible}
         className="overflow-auto max-h-[500px]"
@@ -82,7 +103,7 @@ export default function AssetRelation({ isVisible, asset }: IProps) {
         <div className="px-4 pb-4">
             <h3 className="font-semibold mt-4">Root</h3>
             <div className="grid grid-cols-4 mt-4 gap-8">
-                <AssetRelationCard asset={asset} />
+                <AssetRelationCard asset={asset} ips={ips} />
             </div>
 
             {
@@ -90,7 +111,7 @@ export default function AssetRelation({ isVisible, asset }: IProps) {
                     <h3 className="font-semibold mt-4">Children</h3>
                     <div className="grid grid-cols-4 mt-4 gap-8">
                         {
-                            child.map(c => <AssetRelationCard key={c.id} asset={c} />)
+                            child.map(c => <AssetRelationCard key={c.id} asset={c} ips={ips} />)
                         }
                     </div>
                 </>
@@ -103,7 +124,7 @@ export default function AssetRelation({ isVisible, asset }: IProps) {
                     <h3 className="font-semibold mt-4">Grand Children</h3>
                     <div className="grid grid-cols-4 mt-4 gap-8">
                         {
-                            grandChild.map(c => <AssetRelationCard key={c.id} asset={c} />)
+                            grandChild.map(c => <AssetRelationCard key={c.id} asset={c} ips={ips} />)
                         }
                     </div>
                 </>) : null

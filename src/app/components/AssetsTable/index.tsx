@@ -14,14 +14,15 @@ export default function AssetsTable() {
     const {
         ipAssets,
         isLoading,
-        error
+        error,
+        ips
     } = useListedIPAssets()
 
     if (isLoading) return <SkeletonTable number={12} />
     return <>
         <div className="flex space-x-4">
             <h2 className="text-2xl font-bold text-indigo-500 relative py-4 flex flex-col items-center">
-                Market Place
+                Marketplace
                 <p className="h-[2px] w-1/2 bg-indigo-500 mt-4"></p>
             </h2>
             <h2 className="text-2xl font-bold py-4">
@@ -37,6 +38,7 @@ export default function AssetsTable() {
                             <AssetItem
                                 key={index}
                                 asset={ipAssets}
+                                ips={ips}
                             />
                         ))
                     }

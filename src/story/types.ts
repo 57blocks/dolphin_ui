@@ -353,3 +353,15 @@ export type LicenseWithTerms = {
     licenseTemplate: Address
     licenseTerms: LicenseTerm[]
 }
+
+export type AssetWithGraphDetial = GraphDetial & Asset
+
+export type GraphDetial = {
+    id: Address,
+    ipId: Address,
+    price: BigInt,
+    holder: number,
+    remixs: {
+        childIpId: string
+    }[]
+}
