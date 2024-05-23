@@ -79,7 +79,8 @@ export default function RemixModal({
         args: [
             asset.ipAsset.id,
             selectedLicense?.licenseTemplate,
-            selectedLicense?.id
+            selectedLicense?.id,
+            tokenUri
         ]
     })
 
@@ -129,7 +130,7 @@ export default function RemixModal({
     }
     const mintingFee = result ? Number(result[2]) / 1e18 : 0
     const showApproveBtn = mintingFee > 0 && Number(allowance) < mintingFee;
-    const disabledMintBtn = (isConfirming || isPending) && !showApproveBtn;
+    const disabledMintBtn = (isConfirming || isPending) && !showApproveBtn || !tokenUri;
     return <Dialog.Root open={open}>
         <Dialog.Content maxWidth="450px">
             <Dialog.Title className="relative">

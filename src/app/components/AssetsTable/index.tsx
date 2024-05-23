@@ -11,7 +11,6 @@ import useListedIPAssets from "@/app/hooks/useListedIPAssets";
 const PAGE_SIZE = 10;
 
 export default function AssetsTable() {
-    const [page, setPage] = useState(1)
     const {
         ipAssets,
         isLoading,
@@ -42,12 +41,6 @@ export default function AssetsTable() {
                         ))
                     }
                 </ul>
-            </div>
-            <div className="flex justify-end p-4">
-                <InputPagination
-                    page={page}
-                    onPageChange={p => setPage(p)}
-                />
             </div>
         </div>
     </>

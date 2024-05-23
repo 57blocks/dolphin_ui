@@ -108,13 +108,21 @@ export const remixAbi = [
                 "internalType": "uint256",
                 "name": "licenseTermsId",
                 "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "ipUri",
+                "type": "string"
             }
         ],
         "name": "remix",
-        "outputs": [{
-            "internalType": "address",
-            "name": "childIpId", "type": "address"
-        }],
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "childIpId",
+                "type": "address"
+            }
+        ],
         "stateMutability": "nonpayable",
         "type": "function"
     }

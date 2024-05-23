@@ -849,6 +849,40 @@
         "inputs": [
             {
                 "internalType": "address",
+                "name": "parentIpId",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "licenseTemplate",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "licenseTermsId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "ipUri",
+                "type": "string"
+            }
+        ],
+        "name": "remix",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "childIpId",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
                 "name": "",
                 "type": "address"
             }
@@ -866,7 +900,7 @@
     },
     {
         "inputs": [],
-        "name": "remixingNFT",
+        "name": "remixNFT",
         "outputs": [
             {
                 "internalType": "contract DolphinRemixNFT",
