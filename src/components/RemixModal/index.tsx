@@ -131,6 +131,14 @@ export default function RemixModal({
     const mintingFee = result ? Number(result[2]) / 1e18 : 0
     const showApproveBtn = mintingFee > 0 && Number(allowance) < mintingFee;
     const disabledMintBtn = (isConfirming || isPending) && !showApproveBtn || !tokenUri;
+    useEffect(() => {
+        if (mintingFee !== 0) {
+            CheckAllowance([
+                address,
+                process.env.NEXT_PUBLIC_dolphin_CONTRACT
+            ])
+        }
+    }, [mintingFee])
     return <Dialog.Root open={open}>
         <Dialog.Content maxWidth="450px">
             <Dialog.Title className="relative">
@@ -159,10 +167,10 @@ export default function RemixModal({
                             <h4 className="text-lg font-bold text-green-600">$10-$20</h4>
                         </div>
                     </div>
-                    <p>Set one token uri</p>
+                    <p>Input Metadata</p>
                     <TextField.Root
                         value={tokenUri}
-                        placeholder="Set one token uri"
+                        placeholder="Input Metadata"
                         onChange={handleTokenUriChange}
                     >
                     </TextField.Root>
@@ -188,45 +196,7 @@ export default function RemixModal({
                     </Select.Root>
                     {
                         result && <div className="space-y-2">
-                            <p>Royalty Policy:
-                                <Link
-                                    className="hover:text-indigo-500"
-                                    target="_blank"
-                                    href={`https://sepolia.etherscan.io/address/${result[0]}`}
-                                >
-                                    {result[0]}
-                                </Link>
-                            </p>
-                            <p>Royalty Data: {result[1]}</p>
                             <p>Minting Fee: {royaltyPolicyLoading ? 'Loading...' : <span className="font-bold text-green-600">{mintingFee} MERC20</span>} </p>
-                            <p>
-                                Currency: <Link
-                                    className="hover:text-indigo-500"
-                                    target="_blank"
-                                    href={`https://sepolia.etherscan.io/address/${result[3]}`}
-                                >
-                                    {result[3]}
-                                </Link>
-                            </p>
-                            {
-                                mintingFee !== 0 && (
-                                    <p>Allowance: {
-                                        allowance !== undefined
-                                            ? Number(allowance).toString()
-                                            : <Button
-                                                onClick={() => CheckAllowance([
-                                                    address,
-                                                    process.env.NEXT_PUBLIC_dolphin_CONTRACT
-                                                ])}
-                                                size='1'
-                                            >
-                                                {
-                                                    allowanceChecking ? 'Checking...' : 'Check Allowance'
-                                                }
-                                            </Button>
-                                    }</p>
-                                )
-                            }
                         </div>
                     }
                     {
