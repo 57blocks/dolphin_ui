@@ -11,6 +11,8 @@ import TradeModal from "@/components/TradeModal";
 import { useState } from "react";
 import RemixModal from "@/components/RemixModal";
 import PriceGraph from "./components/PriceGraph";
+import Image from 'next/image';
+import ImgPlaceholder from '@/../public/images/imagePlaceholder.png'
 
 export default function Page({ params: { ipId } }: { params: { ipId: string } }) {
     const { data, isLoading } = useAssetWithNft(ipId);
@@ -65,13 +67,13 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                 {/* image */}
                 <div className="relative col-span-12 flex flex-col gap-6 md:col-span-6">
                     <div className="flex aspect-square w-full flex-shrink-0 overflow-hidden rounded-4xl bg-neutral-50 shadow-sm p-4">
-                        {data?.image_url && (
-                            <img
-                                src={data?.image_url}
-                                alt={data?.name}
-                                className="h-full w-full object-contain"
-                            />
-                        )}
+
+                        <Image
+                            src={data?.image_url || ImgPlaceholder}
+                            alt={data?.name || ''}
+                            className="h-full w-full object-contain"
+                            width={100}
+                        />
                     </div>
 
                     {/* description */}

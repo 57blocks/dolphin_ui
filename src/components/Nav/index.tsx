@@ -3,7 +3,7 @@
 import Link from "next/link";
 import WalletConnector from "../WalletConnector";
 import Search from "../Search";
-import Logo from "./logo";
+import Logo from "./Logo";
 
 export default function Nav() {
     return <nav className="h-[70px] flex justify-between items-center px-8">

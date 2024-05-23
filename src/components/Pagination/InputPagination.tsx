@@ -38,7 +38,7 @@ const InputPagination: React.FC<PaginationProps> = ({ page, onPageChange }) => {
     const handleKeyDown = (event: any) => {
         if (event.keyCode === 13) {
             if (value > 1) {
-                onPageChange(value);
+                onPageChange(Number(value));
             } else {
                 onPageChange(1)
             }
