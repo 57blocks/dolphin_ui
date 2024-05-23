@@ -13,6 +13,7 @@ interface IProps {
     asset: Asset
     ips?: GraphDetial[]
     getPrice?: (prices: number[]) => void
+    getPriceLoading?: (isLoading: boolean) => void
 }
 
 const getIpAssetsByList = async (assets: Asset[]) => {
@@ -41,21 +42,23 @@ export default function AssetRelation({
     isVisible,
     asset,
     ips,
-    getPrice
+    getPrice,
+    getPriceLoading
 }: IProps) {
-    const [isLoaded, setIsLoaded] = useState(false);
     const [grandChild, setGrandChild] = useState<Asset[]>([]);
     const [loadingGrandChild, setLoadingGrandChild] = useState(false);
+    const [a, seta] = useState<Asset[]>([asset])
     const rootAsset = asset;
     const child = rootAsset.childIpIds;
-    let allIps = [asset];
-    if (child && child.length) {
-        allIps = [asset].concat(...child, []);
-    }
 
     const getData = async () => {
         try {
+            let allIps: Asset[] = [];
+            if (child && child.length) {
+                allIps = ([asset] as Asset[]).concat(...child, []);
+            }
             setLoadingGrandChild(true)
+            getPriceLoading && getPriceLoading(true);
             if (rootAsset && rootAsset.childIpIds) {
                 const childAssets: Asset[] | undefined = await getIpAssetsByList(rootAsset.childIpIds);
                 if (childAssets && childAssets.length) {
@@ -76,25 +79,25 @@ export default function AssetRelation({
                     }
                 }
             }
+            seta(allIps)
         } catch (err: any) {
             throw new Error(err)
         } finally {
             setLoadingGrandChild(false)
-            setIsLoaded(true);
+            getPriceLoading && getPriceLoading(false);
         }
     }
     useEffect(() => {
-        if (isLoaded) return;
-        if (isVisible) { getData() }
-    }, [isVisible])
+        getData()
+    }, [asset])
 
     useEffect(() => {
-        if (allIps.length && ips) {
-            const prices = allIps.map((i) => Number(ips.find(ip => ip.ipId == i.id.toLowerCase())?.price) / 1e18)
+        if (a.length && ips) {
+            const prices = a.map((i) => Number(ips.find(ip => ip.ipId == i.id.toLowerCase())?.price) / 1e18)
             const newPrice = prices.sort((a, b) => a - b)
             getPrice && getPrice(newPrice);
         }
-    }, [allIps.length, ips?.length])
+    }, [a.length, ips?.length])
 
     return <AnimateHeightBlock
         isVisible={isVisible}

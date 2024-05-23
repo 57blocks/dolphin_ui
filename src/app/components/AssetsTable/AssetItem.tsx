@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, ChevronDownIcon } from "@radix-ui/themes";
+import { Button, ChevronDownIcon, Spinner } from "@radix-ui/themes";
 import { useState } from "react";
 import clx from "classnames";
 import AssetRelation from "./AssetRelation";
@@ -12,13 +12,16 @@ import { Asset, GraphDetial } from "@/story/types";
 
 export default function AssetItem({
     asset,
-    ips
+    ips,
+    index
 }: {
     asset: Asset,
+    index: number
     ips?: GraphDetial[]
 }) {
     const [open, setOpen] = useState(false);
     const [prices, setPrices] = useState<number[]>([]);
+    const [pricesLoading, setPricesLoading] = useState(false);
     const handlePrices = () => {
         if (prices.length) {
             if (prices.length > 1) {
@@ -28,6 +31,7 @@ export default function AssetItem({
         }
         return 0
     }
+    const numbers = [0.4, 0.6, 0.9];
     return (
         <li className="odd:bg-gray-100 rounded-lg">
             <div className="flex justify-between items-center p-4">
@@ -37,6 +41,7 @@ export default function AssetItem({
                     width={100}
                     height={100}
                     alt=""
+                    overrideSrc={ImgPlaceholder.src}
                 />
                 <div className="flex flex-1 ml-4 items-center">
                     <div className="w-1/3">
@@ -49,12 +54,14 @@ export default function AssetItem({
                     <div className="flex ml-4 basis-1/2 flex-1 justify-between items-center">
                         <div className="w-1/3">
                             <h4 className="text-lg font-bold text-green-600">
-                                {handlePrices()} ETH
+                                {
+                                    pricesLoading ? <Spinner /> : `${handlePrices()} ETH`
+                                }
                             </h4>
                             <p>Current Price</p>
                         </div>
                         <div>
-                            <h4 className="text-lg font-medium">[0.4, 0.7, 0.9]</h4>
+                            <h4 className="text-lg font-medium">{numbers[index]}</h4>
                             <p>dPrice / dRemix</p>
                         </div>
                         <div>
@@ -82,6 +89,7 @@ export default function AssetItem({
                 isVisible={open}
                 ips={ips}
                 getPrice={setPrices}
+                getPriceLoading={setPricesLoading}
             />
         </li>
     )

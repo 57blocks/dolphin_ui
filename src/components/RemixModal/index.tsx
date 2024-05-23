@@ -164,7 +164,6 @@ export default function RemixModal({
                                 {asset?.name || 'Untitled'}
                             </h4>
                             <p>IP ID: {asset?.ipAsset.id}</p>
-                            <h4 className="text-lg font-bold text-green-600">$10-$20</h4>
                         </div>
                     </div>
                     <p>Input Metadata</p>
@@ -196,7 +195,7 @@ export default function RemixModal({
                     </Select.Root>
                     {
                         result && <div className="space-y-2">
-                            <p>Minting Fee: {royaltyPolicyLoading ? 'Loading...' : <span className="font-bold text-green-600">{mintingFee} MERC20</span>} </p>
+                            <p>Minting Fee: {royaltyPolicyLoading ? 'Loading...' : <span className="font-bold text-green-600">{mintingFee} UNIT</span>} </p>
                         </div>
                     }
                     {

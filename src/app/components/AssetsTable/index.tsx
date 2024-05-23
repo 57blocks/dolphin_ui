@@ -37,6 +37,7 @@ export default function AssetsTable() {
                         ipAssets?.map((ipAssets, index) => (
                             <AssetItem
                                 key={index}
+                                index={index}
                                 asset={ipAssets}
                                 ips={ips}
                             />
