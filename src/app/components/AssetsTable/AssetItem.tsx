@@ -1,6 +1,5 @@
 'use client'
 
-import { NftWithAsset } from "@/app/hooks/useIPAssetNfts";
 import { Button, ChevronDownIcon } from "@radix-ui/themes";
 import { useState } from "react";
 import clx from "classnames";
@@ -9,11 +8,12 @@ import Link from "next/link";
 import formatAddress from "@/utils/formatAddress";
 import Image from 'next/image';
 import ImgPlaceholder from '@/../public/images/imagePlaceholder.png'
+import { Asset } from "@/story/types";
 
 export default function AssetItem({
     asset
 }: {
-    asset: NftWithAsset
+    asset: Asset
 }) {
     const [open, setOpen] = useState(false);
     return (
@@ -21,7 +21,7 @@ export default function AssetItem({
             <div className="flex justify-between items-center p-4">
                 <Image
                     className="w-16 h-16 rounded-lg object-cover"
-                    src={asset.image_url || ImgPlaceholder}
+                    src={asset.nftMetadata.imageUrl ? `https://ipfs.io/ipfs/${asset.nftMetadata.imageUrl.replace('ipfs://', '')}` : ImgPlaceholder}
                     width={100}
                     height={100}
                     alt=""
@@ -29,9 +29,9 @@ export default function AssetItem({
                 <div className="flex flex-1 ml-4 items-center">
                     <div className="w-1/3">
                         <h4 className="text-lg font-bold hover:text-indigo-600">
-                            <Link href={`/assets/${asset.ipAsset.id}`}>{asset.name || asset.ipAsset.nftMetadata.name || 'Untitled'}</Link>
+                            <Link href={`/assets/${asset.id}`}>{asset.nftMetadata.name || 'Untitled'}</Link>
                         </h4>
-                        <p>IP ID: {formatAddress(asset.ipAsset.id)}</p>
+                        <p>IP ID: {formatAddress(asset.id)}</p>
                     </div>
                     <div className="h-[30px] w-[1px] bg-gray-300 ml-4"></div>
                     <div className="flex ml-4 basis-1/2 flex-1 justify-between items-center">

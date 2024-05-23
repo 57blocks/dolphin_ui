@@ -169,6 +169,8 @@ export type Asset = {
         uri: string
         tokenContract: Address
         tokenId: string
+        imageUrl: string
+        tokenUri: string
     }
     blockNumber: string
     blockTimestamp: string

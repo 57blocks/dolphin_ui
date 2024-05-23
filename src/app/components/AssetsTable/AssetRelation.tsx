@@ -3,36 +3,59 @@
 import AssetRelationCard from "./AssetRelationCard";
 import { NftWithAsset, fetchNftByIpAssets } from "@/app/hooks/useIPAssetNfts";
 import { useEffect, useState } from "react";
-import { Asset } from "@/story/types";
+import { Asset, RESOURCE_TYPE } from "@/story/types";
 import AnimateHeightBlock from "@/components/AnimateHeightBlock";
+import { getResource } from "@/story/storyApi";
 
 interface IProps {
     isVisible: boolean,
-    asset: NftWithAsset
+    asset: Asset
+}
+
+const getIpAssetsByList = async (assets: Asset[]) => {
+    try {
+        const promises = assets.map(async (ip: Asset) => {
+            const data = await getResource(
+                RESOURCE_TYPE.ASSET,
+                ip.id
+            )
+            return data.data;
+        })
+
+        const ipAssets = await Promise.allSettled(promises).then((res) => {
+            const result = res.map(({ value }: any) => {
+                return value
+            })
+            return result
+        })
+        return ipAssets
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 export default function AssetRelation({ isVisible, asset }: IProps) {
     const [isLoaded, setIsLoaded] = useState(false);
-    const [grandChild, setGrandChild] = useState<NftWithAsset[]>([]);
-    const [child, setChild] = useState<NftWithAsset[]>([])
-    const rootAsset = asset.ipAsset;
+    const [grandChild, setGrandChild] = useState<Asset[]>([]);
+    const rootAsset = asset;
+    const child = rootAsset.childIpIds;
     const getData = async () => {
         try {
             if (rootAsset && rootAsset.childIpIds) {
-                const result = await fetchNftByIpAssets(rootAsset.childIpIds);
-                if (result?.nfts) {
-                    setChild(result?.nfts);
+                const childAssets: Asset[] | undefined = await getIpAssetsByList(rootAsset.childIpIds);
+                if (childAssets && childAssets.length) {
                     const grandChildIpas: Asset[] = [];
-                    result?.nfts.forEach(nft => {
-                        const childIpaIds = nft.ipAsset?.childIpIds;
+                    childAssets.forEach(asset => {
+                        const childIpaIds = asset?.childIpIds;
                         if (childIpaIds) {
                             grandChildIpas.push(...childIpaIds)
                         }
                     })
+
                     if (grandChildIpas.length) {
-                        const grandChildRes = await fetchNftByIpAssets(grandChildIpas);
-                        if (grandChildRes?.nfts) {
-                            setGrandChild(grandChildRes?.nfts);
+                        const grandChildAssets: Asset[] | undefined = await getIpAssetsByList(grandChildIpas);
+                        if (grandChildAssets && grandChildAssets.length) {
+                            setGrandChild(grandChildAssets)
                         }
                     }
                 }
@@ -59,11 +82,11 @@ export default function AssetRelation({ isVisible, asset }: IProps) {
             </div>
 
             {
-                child.length ? (<>
+                child?.length ? (<>
                     <h3 className="font-semibold mt-4">Children</h3>
                     <div className="grid grid-cols-4 mt-4 gap-8">
                         {
-                            child.map(c => <AssetRelationCard key={c.ipAsset.id} asset={c} />)
+                            child.map(c => <AssetRelationCard key={c.id} asset={c} />)
                         }
                     </div>
                 </>
@@ -74,7 +97,7 @@ export default function AssetRelation({ isVisible, asset }: IProps) {
                     <h3 className="font-semibold mt-4">Grand Children</h3>
                     <div className="grid grid-cols-4 mt-4 gap-8">
                         {
-                            grandChild.map(c => <AssetRelationCard key={c.ipAsset.id} asset={c} />)
+                            grandChild.map(c => <AssetRelationCard key={c.id} asset={c} />)
                         }
                     </div>
                 </>) : null

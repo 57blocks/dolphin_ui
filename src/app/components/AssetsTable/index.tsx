@@ -6,19 +6,18 @@ import AssetItem from "./AssetItem";
 import { useState } from "react";
 import InputPagination from "@/components/Pagination/InputPagination";
 import Link from "next/link";
+import useListedIPAssets from "@/app/hooks/useListedIPAssets";
 
 const PAGE_SIZE = 10;
 
 export default function AssetsTable() {
     const [page, setPage] = useState(1)
-    const { isLoading, nfts } = useIPAssetNfts(
-        {
-            pagination: {
-                limit: PAGE_SIZE,
-                offset: PAGE_SIZE * (page - 1),
-            },
-        }
-    )
+    const {
+        ipAssets,
+        isLoading,
+        error
+    } = useListedIPAssets()
+
     if (isLoading) return <SkeletonTable number={12} />
     return <>
         <div className="flex space-x-4">
@@ -35,10 +34,10 @@ export default function AssetsTable() {
             <div className="p-4">
                 <ul>
                     {
-                        nfts?.map((nft, index) => (
+                        ipAssets?.map((ipAssets, index) => (
                             <AssetItem
                                 key={index}
-                                asset={nft}
+                                asset={ipAssets}
                             />
                         ))
                     }

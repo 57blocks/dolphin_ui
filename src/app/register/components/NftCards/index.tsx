@@ -70,7 +70,9 @@ export default function NftCards() {
                         </div>
                     )) : <div className="h-[200px] col-start-2 flex flex-col space-y-4 justify-center items-center">
                         <h3 className="font-bold text-lg text-center">You still have no asset, Please register one!</h3>
-                        <Link target="_blank" href='https://play.storyprotocol.xyz/assets/register'><Button className=" cursor-pointer">Register</Button></Link>
+                        <Link target="_blank" href='https://play.storyprotocol.xyz/assets/register'>
+                            <Button className=" cursor-pointer">Register</Button>
+                        </Link>
                     </div>
                 }
             </div>
