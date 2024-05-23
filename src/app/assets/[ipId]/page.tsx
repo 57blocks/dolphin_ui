@@ -73,6 +73,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                             alt={data?.name || ''}
                             className="h-full w-full object-contain"
                             width={100}
+                            height={100}
                         />
                     </div>
 

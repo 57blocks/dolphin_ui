@@ -12,7 +12,7 @@ function handleParents(parents: Asset[], self: Asset) {
     const data = parents.map((p, idx) => {
         return {
             name: p.nftMetadata.name || `${p.tokenId}:${p.id}`,
-            x: 10 + idx,
+            x: 10 + idx * 5,
             y: 10,
         }
     });
@@ -32,7 +32,7 @@ function handleChildren(children: Asset[], self: Asset) {
     const data = children.map((c, idx) => {
         return {
             name: c.nftMetadata.name || `${c.tokenId}:${c.id}`,
-            x: 10 + idx,
+            x: 10 + idx * 5,
             y: 30,
         }
     });

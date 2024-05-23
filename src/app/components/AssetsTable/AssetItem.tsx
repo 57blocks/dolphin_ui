@@ -23,6 +23,7 @@ export default function AssetItem({
                     className="w-16 h-16 rounded-lg object-cover"
                     src={asset.image_url || ImgPlaceholder}
                     width={100}
+                    height={100}
                     alt=""
                 />
                 <div className="flex flex-1 ml-4 items-center">
