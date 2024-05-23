@@ -91,7 +91,7 @@ export default function TradeModal({
             <Dialog.Description size="2" mb="4">
                 <div className="border-t pt-4 space-y-2">
                     <p>IP ID: {asset?.ipAsset.id}</p>
-                    <p><strong className="uppercase">{method}</strong> 1 share</p>
+                    <p><strong className="uppercase">{method}</strong> 1 FIN</p>
                     <div className="text-right space-y-2">
                         {/* <p>Insufficient Balance</p> */}
                         <p>Balance: {balance?.formatted.slice(0, 6)} ETH</p>
@@ -122,7 +122,7 @@ export default function TradeModal({
                         ? 'Waiting for Transaction...'
                         : <strong className="uppercase">{method}</strong>}
                     </Button>
-                    <p>Share price will go up when more people buy. And you can sell it anytime.</p>
+                    <p>The price will go up when more people buy. And you can sell it anytime.</p>
                 </div>
             </Dialog.Description>
         </Dialog.Content>

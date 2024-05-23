@@ -55,11 +55,11 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                     </div>
                     <div className="col-span-1 text-center">
                         <h5 className="font-bold text-xl">25</h5>
-                        <div>Number of Childs</div>
+                        <div>Number of Nodes</div>
                     </div>
                     <div className="col-span-1 text-center">
                         <h5 className="font-bold text-xl">6</h5>
-                        <div>Longest of Child Nodes</div>
+                        <div>The number of Nodes <br /> from Longest chain</div>
                     </div>
                 </div>
                 {/* image */}
