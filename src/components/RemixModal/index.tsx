@@ -8,10 +8,10 @@ import { allowanceAbi, approveAbi, getRoyaltyPolicyAbi } from "@/story/abi";
 import { useStoryReadContract } from "@/story/readContract";
 import { LicenseWithTerms } from "@/story/types";
 import { CrossCircledIcon } from "@radix-ui/react-icons";
-import { Button, Dialog, Select } from "@radix-ui/themes";
+import { Button, Dialog, Select, TextField } from "@radix-ui/themes";
 import clx from 'classnames'
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import { maxUint256, numberToHex } from "viem";
 import { useAccount } from "wagmi";
 
@@ -49,7 +49,7 @@ export default function RemixModal({
         </Dialog.Root>
     )
     const [selectedLicense, setSelectedLicense] = useState<LicenseWithTerms>();
-
+    const [tokenUri, setTokenUri] = useState('')
     const {
         result,
         isLoading: royaltyPolicyLoading,
@@ -123,6 +123,10 @@ export default function RemixModal({
             licenseType
         }
     })
+    const handleTokenUriChange: ChangeEventHandler<HTMLInputElement> = event => {
+        const value = event.target.value;
+        setTokenUri(value);
+    }
     const mintingFee = result ? Number(result[2]) / 1e18 : 0
     const showApproveBtn = mintingFee > 0 && Number(allowance) < mintingFee;
     const disabledMintBtn = (isConfirming || isPending) && !showApproveBtn;
@@ -154,6 +158,13 @@ export default function RemixModal({
                             <h4 className="text-lg font-bold text-green-600">$10-$20</h4>
                         </div>
                     </div>
+                    <p>Set one token uri</p>
+                    <TextField.Root
+                        value={tokenUri}
+                        placeholder="Set one token uri"
+                        onChange={handleTokenUriChange}
+                    >
+                    </TextField.Root>
                     <p>Pick a License</p>
                     <Select.Root
                         value={selectedLicense?.id}
@@ -176,13 +187,15 @@ export default function RemixModal({
                     </Select.Root>
                     {
                         result && <div className="space-y-2">
-                            <p>Royalty Policy: <Link
-                                className="hover:text-indigo-500"
-                                target="_blank"
-                                href={`https://sepolia.etherscan.io/address/${result[0]}`}
-                            >
-                                {result[0]}
-                            </Link></p>
+                            <p>Royalty Policy:
+                                <Link
+                                    className="hover:text-indigo-500"
+                                    target="_blank"
+                                    href={`https://sepolia.etherscan.io/address/${result[0]}`}
+                                >
+                                    {result[0]}
+                                </Link>
+                            </p>
                             <p>Royalty Data: {result[1]}</p>
                             <p>Minting Fee: {royaltyPolicyLoading ? 'Loading...' : <span className="font-bold text-green-600">{mintingFee} MERC20</span>} </p>
                             <p>
