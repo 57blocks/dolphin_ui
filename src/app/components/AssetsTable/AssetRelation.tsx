@@ -94,7 +94,7 @@ export default function AssetRelation({
             const newPrice = prices.sort((a, b) => a - b)
             getPrice && getPrice(newPrice);
         }
-    }, [allIps, ips])
+    }, [allIps.length, ips?.length])
 
     return <AnimateHeightBlock
         isVisible={isVisible}
