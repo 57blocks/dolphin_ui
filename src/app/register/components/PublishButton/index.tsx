@@ -29,7 +29,7 @@ export default function PublishButton({
         if (isPending) return 'Confirming...';
         if (isConfirming) return 'Waiting for confirmation...';
         if (isConfirmed) return 'Transaction confirmed'
-        return 'Racking to The Market';
+        return 'Listing';
     }
     return <>
         <Alert
