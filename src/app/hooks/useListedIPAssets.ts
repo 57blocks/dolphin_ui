@@ -19,17 +19,21 @@ const GET_POSTS = gql`
 `;
 export default function useListedIPAssets() {
     const [ipAssets, setIpAssets] = useState<Asset[]>([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState<unknown>()
 
-    const { data } = useQuery(GET_POSTS, { client: GraphQLClient });
+    const { data, loading: graphQLLoaing } = useQuery(GET_POSTS, { client: GraphQLClient });
     useEffect(() => {
         fetchIpAssets()
     }, [data])
     const fetchIpAssets = async () => {
-        setIsLoading(true);
+        setLoading(true);
         try {
-            const promises = data.ips.map(async (ip: any) => {
+            const remixedIpIds = data.ips
+                .reduce((prev: any, next: any) => prev.concat(...next.remixs), [])
+                .map((r: any) => r.childIpId)
+            const queryIps = data.ips.filter((ip: any) => !remixedIpIds.includes(ip.ipId))
+            const promises = queryIps.map(async (ip: any) => {
                 const data = await getResource(
                     RESOURCE_TYPE.ASSET,
                     getAddress(ip.ipId)
@@ -43,15 +47,16 @@ export default function useListedIPAssets() {
                 })
                 return result
             })
+
             setIpAssets(ipAssets);
         } catch (err) {
             setError(err)
         } finally {
-            setIsLoading(false)
+            setLoading(false)
         }
     }
     return {
-        isLoading,
+        isLoading: graphQLLoaing || loading,
         error,
         ipAssets
     }

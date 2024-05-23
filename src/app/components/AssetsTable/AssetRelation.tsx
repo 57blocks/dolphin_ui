@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Asset, RESOURCE_TYPE } from "@/story/types";
 import AnimateHeightBlock from "@/components/AnimateHeightBlock";
 import { getResource } from "@/story/storyApi";
+import { SkeletonTable } from "@/components/Skeletons/SkeletonTable";
 
 interface IProps {
     isVisible: boolean,
@@ -37,10 +38,12 @@ const getIpAssetsByList = async (assets: Asset[]) => {
 export default function AssetRelation({ isVisible, asset }: IProps) {
     const [isLoaded, setIsLoaded] = useState(false);
     const [grandChild, setGrandChild] = useState<Asset[]>([]);
+    const [loadingGrandChild, setLoadingGrandChild] = useState(false);
     const rootAsset = asset;
     const child = rootAsset.childIpIds;
     const getData = async () => {
         try {
+            setLoadingGrandChild(true)
             if (rootAsset && rootAsset.childIpIds) {
                 const childAssets: Asset[] | undefined = await getIpAssetsByList(rootAsset.childIpIds);
                 if (childAssets && childAssets.length) {
@@ -63,6 +66,7 @@ export default function AssetRelation({ isVisible, asset }: IProps) {
         } catch (err: any) {
             throw new Error(err)
         } finally {
+            setLoadingGrandChild(false)
             setIsLoaded(true);
         }
     }
@@ -93,7 +97,9 @@ export default function AssetRelation({ isVisible, asset }: IProps) {
                 ) : null
             }
             {
-                grandChild.length ? (<>
+                loadingGrandChild ? <div className="grid grid-cols-4 mt-4 gap-8">
+                    <SkeletonTable number={1} />
+                </div> : grandChild.length ? (<>
                     <h3 className="font-semibold mt-4">Grand Children</h3>
                     <div className="grid grid-cols-4 mt-4 gap-8">
                         {

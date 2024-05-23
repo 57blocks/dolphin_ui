@@ -55,7 +55,7 @@ export default function AssetItem({
                     className="mx-4 px-2 cursor-pointer"
                     onClick={() => setOpen(!open)}
                 >
-                    View All
+                    Expand Collection
                     <ChevronDownIcon
                         className={clx('transition-all', {
                             'rotate-180': open
