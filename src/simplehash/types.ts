@@ -1,3 +1,4 @@
+import { GraphDetial } from "@/story/types"
 import { Address } from "viem"
 
 export type NFTWalletResponse = {
@@ -92,6 +93,8 @@ export type SPExtendedNFTMetadata = NFTMetadata & {
     isRegistered?: boolean
     ipId?: Address
 }
+
+export type DLExtendedNFTMetadata = NFTMetadata & GraphDetial
 
 export type CollectionResponse = {
     next_cursor: string | null

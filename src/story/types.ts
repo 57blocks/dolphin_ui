@@ -361,6 +361,10 @@ export type GraphDetial = {
     ipId: Address,
     price: BigInt,
     holder: number,
+    tokenContract: Address,
+    tokenId: Address,
+    floorPrice: BigInt,
+    supply: number,
     remixs: {
         childIpId: string
     }[]
