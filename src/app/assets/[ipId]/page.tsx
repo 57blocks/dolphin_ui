@@ -32,44 +32,44 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                 <div className="col-span-12 flex items-center justify-between">
                     <div className="header-title text-3xl font-bold">
                         {data?.name || 'Untitled'}
-                        <h4 className="text-2xl font-bold text-green-600">{data?.price ? (Number(data?.price) / 1e18).toFixed(6) : 0} ETH</h4>
+                        <h4 className="text-2xl font-bold text-green-600 mt-4">{data?.price ? (Number(data?.price) / 1e18).toFixed(6) : 0} ETH</h4>
                     </div>
-                    <div className=" space-x-2">
+                    <div className="space-x-4">
                         <Button
                             variant="outline"
-                            className="w-[150px] py-5 cursor-pointer"
+                            className="w-[150px] rounded-lg py-5 cursor-pointer text-[#5538CE] border-[#5538CE] shadow-[#5538CE]"
                             onClick={() => setOpenRemixModal(true)}
                         >Remix</Button>
                         <Button
                             onClick={() => {
                                 setOpen(true)
                             }}
-                            className="w-[150px] py-5 cursor-pointer"
+                            className="w-[150px] rounded-lg bg-[#5538CE] py-5 cursor-pointer"
                         >Buy</Button>
                         <Button
                             onClick={() => {
                                 setOpenSellModal(true)
                             }}
-                            className="w-[150px] py-5 cursor-pointer"
+                            className="w-[150px] rounded-lg bg-[#5538CE] py-5 cursor-pointer"
                         >Sell</Button>
                     </div>
                 </div>
-                <div className="col-span-12 grid grid-cols-3 rounded-4xl bg-neutral-50 shadow-sm p-4">
+                <div className="col-span-12 grid grid-cols-3 rounded-3xl bg-neutral-50 shadow-sm p-6">
                     <div className="col-span-1 text-center">
                         <h5 className="font-bold text-xl">{data ? data.holder : 0}</h5>
-                        <div>Number of Holders</div>
+                        <div className="text-[#6B7280] mt-2">Number of Holders</div>
                     </div>
                     <div className="col-span-1 text-center">
                         <h5 className="font-bold text-xl">{data ? data.remixs.length : 0}</h5>
-                        <div>Number of Nodes</div>
+                        <div className="text-[#6B7280] mt-2">Number of Nodes</div>
                     </div>
                     <div className="col-span-1 text-center">
                         <h5 className="font-bold text-xl">6</h5>
-                        <div>The Longest chain</div>
+                        <div className="text-[#6B7280] mt-2">The Longest chain</div>
                     </div>
                 </div>
                 <div className="relative col-span-12 flex flex-col gap-6 md:col-span-6">
-                    <div className="flex aspect-square w-full flex-shrink-0 overflow-hidden rounded-4xl bg-neutral-50 shadow-sm p-4">
+                    <div className="flex aspect-square w-full flex-shrink-0 overflow-hidden rounded-3xl bg-neutral-50 shadow-sm p-4">
                         <Image
                             src={data?.image_url || ImgPlaceholder}
                             alt={data?.name || ''}
@@ -80,7 +80,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                     </div>
                 </div>
                 <div className="col-span-12 flex flex-col gap-6 md:col-span-6">
-                    <div className="w-full rounded-4xl bg-neutral-50 p-8 shadow-sm">
+                    <div className="w-full rounded-3xl bg-neutral-50 p-8 shadow-sm">
                         <h2 className="mb-4 text-2xl font-bold">Licensing</h2>
                         <h3 className="mb-2 text-lg font-bold">License Types</h3>
                         <LicenseType
@@ -88,20 +88,20 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                             afterLoading={(data) => setLicenses(data)}
                         />
                     </div>
-                    <div className="w-full rounded-4xl bg-neutral-50 p-8 shadow-sm">
+                    <div className="w-full rounded-3xl bg-neutral-50 p-8 shadow-sm">
                         <h2 className="text-2xl font-bold">Details</h2>
                         <Detail data={data} />
                     </div>
                 </div>
                 {/* <div
-                    className='grid grid-cols-12 col-span-12 gap-4 overflow-hidden rounded-4xl bg-neutral-50 shadow-sm'
+                    className='grid grid-cols-12 col-span-12 gap-4 overflow-hidden rounded-3xl bg-neutral-50 shadow-sm'
                 >
                     <div className='col-span-6 p-8'>
                         <h2 className="text-2xl font-bold">Lineage</h2>
                     </div>
                 </div> */}
                 <div
-                    className='grid grid-cols-12 col-span-12 gap-4 overflow-hidden rounded-4xl bg-neutral-50 shadow-sm p-8'
+                    className='grid grid-cols-12 col-span-12 gap-4 overflow-hidden rounded-3xl bg-neutral-50 shadow-sm p-8'
                 >
                     <h2 className="col-span-12 text-2xl font-bold">Current Position in Price Curve</h2>
                     <PriceGraph />

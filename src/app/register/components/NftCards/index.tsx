@@ -16,13 +16,13 @@ export default function NftCards() {
         <SkeletonCard number={6} />
     </div>
     return <>
-        <div className="flex space-x-4">
-            <h2 className="text-2xl font-bold py-4">
-                <Link href='/'>Marketplace</Link>
+        <div className="flex space-x-8 text-[32px] mt-10">
+            <h2 className="font-bold py-4">
+                <Link href='/register'>Marketplace</Link>
+                <p className="h-[2px] w-1/2 bg-[#5538CE] mt-4"></p>
             </h2>
-            <h2 className="text-2xl font-bold text-indigo-500 relative py-4 flex flex-col items-center">
+            <h2 className="font-bold text-[#5538CE] relative py-4 flex flex-col items-center">
                 My Assets
-                <p className="h-[2px] w-1/2 bg-indigo-500 mt-4"></p>
             </h2>
         </div>
         <p className="text-gray-500 mt-4">Follow the steps to register your intellectual property</p>
@@ -37,7 +37,7 @@ export default function NftCards() {
                             </p>
                             <PublishButton
                                 ipId={selected}
-                                className="absolute top-4 right-4" />
+                                className="absolute top-4 right-4 w-[150px] rounded-lg bg-[#5538CE] py-5" />
                         </>
                     )
                 }
@@ -50,7 +50,7 @@ export default function NftCards() {
                             className={clx(
                                 "rounded-md bg-gray-100 p-2 cursor-pointer shadow-none transition-shadow hover:shadow-2xl",
                                 {
-                                    'border-2 border-indigo-500': nft.ipId === selected
+                                    'border-2 border-[#5538CE]': nft.ipId === selected
                                 })
                             }
                             onClick={() => setSelected(nft.ipId)}
@@ -71,7 +71,7 @@ export default function NftCards() {
                     )) : <div className="h-[200px] col-start-2 flex flex-col space-y-4 justify-center items-center">
                         <h3 className="font-bold text-lg text-center">You still have no asset, Please register one!</h3>
                         <Link target="_blank" href='https://play.storyprotocol.xyz/assets/register'>
-                            <Button className=" cursor-pointer">Register</Button>
+                            <Button className="w-[150px] rounded-lg bg-[#5538CE] py-5 cursor-pointer">Register</Button>
                         </Link>
                     </div>
                 }

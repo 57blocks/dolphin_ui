@@ -7,7 +7,7 @@ export default function Search() {
     return <>
         <div
             onClick={() => setOpen(true)}
-            className="flex items-center w-[400px] h-[42px] rounded-lg cursor-pointer border bg-gray-200"
+            className="flex items-center w-[400px] h-[42px] rounded-lg cursor-pointer bg-[#F5F7FB] text-[#6B7280]"
         >
             <div className="shrink-0 p-2">
                 <MagnifyingGlassIcon height="16" width="16" />
