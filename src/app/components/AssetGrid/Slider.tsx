@@ -39,7 +39,7 @@ export default function DPSlider({
                     {
                         remixes.map((ipf) =>
                             <div key={ipf.ipId}>
-                                <Link href={`/assets/${getAddress(ipf.ipId)}`}>
+                                <Link href={`/assets/${ipf.ipId}`}>
                                     <div className='mx-1 rounded-md overflow-hidden z-10 cursor-pointer shadow-md transition-all hover:translate-y-[-5px] hover:shadow-lg'>
                                         <div className='overflow-hidden h-[350px]'>
                                             <Image alt="" height={200} width={200} src={ipf.image_url} className='w-full h-full object-cover' />

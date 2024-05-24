@@ -1,42 +1,10 @@
 'use client'
-
-import DragonBallOrgImg from '@/../public/images/Dragon_Ball/Dragon Ball/Original.jpg';
-import DragonBallR2Img from '@/../public/images/Dragon_Ball/Dragon Ball/Remix_2.jpg';
-import DragonBallR31Img from '@/../public/images/Dragon_Ball/Dragon Ball/Remix_31.jpg';
-import DragonBallR32Img from '@/../public/images/Dragon_Ball/Dragon Ball/Remix_32.jpg';
-import DragonBallR33Img from '@/../public/images/Dragon_Ball/Dragon Ball/Remix_33.jpg';
-import DragonBallR41Img from '@/../public/images/Dragon_Ball/Dragon Ball/Remix_41.jpg';
-import DragonBallR42Img from '@/../public/images/Dragon_Ball/Dragon Ball/Remix_42.jpg';
 import Link from 'next/link';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
-import Image from 'next/image';
-import { useRef, useState } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import useIPSWithNft from '@/app/hooks/useIPSWithNft';
 import DPSlider from './Slider';
 import { SkeletonTable } from '@/components/Skeletons/SkeletonTable';
 
 export default function AssetGtid() {
-    const settings = {
-        dots: false,
-        speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        arrows: false,
-        draggable: true
-    };
-    const dragonBallImgs = [
-        DragonBallOrgImg,
-        DragonBallR2Img,
-        DragonBallR31Img,
-        DragonBallR32Img,
-        DragonBallR33Img,
-        DragonBallR41Img,
-        DragonBallR42Img
-    ]
-    let sliderRef = useRef<any>(null);
     const { isLoading, rootIps, ipsWithNft } = useIPSWithNft()
     if (isLoading) return <SkeletonTable number={5} />
     return <>

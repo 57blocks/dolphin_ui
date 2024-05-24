@@ -1,4 +1,4 @@
-import { Address } from "viem";
+import { Address, getAddress } from "viem";
 import useLicense from "../hooks/useLicense";
 import { LicenseTerm, LicenseWithTerms } from "@/story/types";
 import { useState } from "react";
@@ -97,7 +97,7 @@ export default function LicenseType({
     afterLoading?: (data: LicenseWithTerms[]) => void
 }) {
     if (!ipId) return null;
-    const { result: data, isLoading } = useLicense(ipId);
+    const { result: data, isLoading } = useLicense(getAddress(ipId));
     if (isLoading) return <div className="animate-pulse">
         <div className="h-16 rounded-lg bg-neutral-200"></div>
     </div>

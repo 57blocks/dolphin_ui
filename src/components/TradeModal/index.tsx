@@ -9,11 +9,13 @@ import { useEffect } from "react";
 import { useAccount, useBalance } from "wagmi";
 import clx from 'classnames'
 import Link from "next/link";
+import { DLExtendedNFTMetadata } from "@/simplehash/types";
+import { getAddress } from "viem";
 
 interface IProps {
     open: boolean,
     method?: 'buy' | 'sell'
-    asset?: NftWithAsset | null
+    asset?: DLExtendedNFTMetadata | null
     onClose?: () => void
 }
 
@@ -23,6 +25,7 @@ export default function TradeModal({
     asset,
     onClose
 }: IProps) {
+    if (!asset) return null;
     const { address } = useAccount()
     const { data: balance } = useBalance({
         address
@@ -57,7 +60,7 @@ export default function TradeModal({
     let writeContractArgs: DolphinWriteContractProps = {
         abi: trade.abi,
         functionName: trade.functionName,
-        args: [asset?.ipAsset.id],
+        args: [getAddress(asset?.ipId)],
     }
 
     if (method === 'buy') {
@@ -74,7 +77,7 @@ export default function TradeModal({
     } = useDolphinWriteContract(writeContractArgs)
 
     useEffect(() => {
-        read([asset?.ipAsset.id])
+        read([getAddress(asset?.ipId)])
     }, [])
 
     return <Dialog.Root open={open} key={method}>
@@ -90,7 +93,7 @@ export default function TradeModal({
             </Dialog.Title>
             <Dialog.Description size="2" mb="4">
                 <div className="border-t pt-4 space-y-2">
-                    <p>IP ID: {asset?.ipAsset.id}</p>
+                    <p>IP ID: {getAddress(asset?.ipId)}</p>
                     <p><strong className="uppercase">{method}</strong> 1 FIN</p>
                     <div className="text-right space-y-2">
                         {/* <p>Insufficient Balance</p> */}

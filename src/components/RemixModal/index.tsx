@@ -4,6 +4,7 @@ import { remixAbi } from "@/dolphin/abis";
 import { function_names } from "@/dolphin/constants";
 import { useDolphinReadContract } from "@/dolphin/readContract";
 import { useDolphinWriteContract } from "@/dolphin/writeContract";
+import { DLExtendedNFTMetadata } from "@/simplehash/types";
 import { allowanceAbi, approveAbi, getRoyaltyPolicyAbi } from "@/story/abi";
 import { useStoryReadContract } from "@/story/readContract";
 import { LicenseWithTerms } from "@/story/types";
@@ -12,13 +13,13 @@ import { Button, Dialog, Select, TextField } from "@radix-ui/themes";
 import clx from 'classnames'
 import Link from "next/link";
 import { ChangeEventHandler, useEffect, useState } from "react";
-import { maxUint256, numberToHex } from "viem";
+import { getAddress, maxUint256, numberToHex } from "viem";
 import { useAccount } from "wagmi";
 
 interface IProps {
     open: boolean
     licenses: LicenseWithTerms[]
-    asset: NftWithAsset
+    asset: DLExtendedNFTMetadata
     onClose?: () => void
 }
 
@@ -77,7 +78,7 @@ export default function RemixModal({
         abi: remixAbi,
         functionName: function_names.remix,
         args: [
-            asset.ipAsset.id,
+            getAddress(asset.ipId),
             selectedLicense?.licenseTemplate,
             selectedLicense?.id,
             tokenUri
@@ -163,7 +164,7 @@ export default function RemixModal({
                             <h4 className="text-lg font-medium hover:text-indigo-600">
                                 {asset?.name || 'Untitled'}
                             </h4>
-                            <p>IP ID: {asset?.ipAsset.id}</p>
+                            <p>IP ID: {asset?.ipId}</p>
                         </div>
                     </div>
                     <p>Input Metadata</p>
