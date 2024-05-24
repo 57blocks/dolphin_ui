@@ -60,7 +60,7 @@ export default function DPSlider({
                                                 </div>
                                                 <div>
                                                     <h4 className='text-normal'>Remix Passport</h4>
-                                                    <p className='font-bold text-lg'>3x</p>
+                                                    <p className='font-bold text-lg'>{ipf.remixs.length}x</p>
                                                 </div>
                                                 <div>
                                                     <h4 className='text-normal'>Remix Floor</h4>
