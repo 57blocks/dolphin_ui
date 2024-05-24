@@ -5,12 +5,9 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
-import useIPSWithNft from '@/app/hooks/useIPSWithNft';
-import { GraphDetial } from '@/story/types';
 import { DLExtendedNFTMetadata } from '@/simplehash/types';
-import { getAddress } from 'viem';
 import formatAddress from '@/utils/formatAddress';
 
 export default function DPSlider({

@@ -12,7 +12,7 @@ export default function Register() {
             </div>
         )
     }
-    return <main className="flex flex-col items-center justify-between">
+    return <main>
         <div className="mx-14 mt-10">
             <NftCards />
         </div>
