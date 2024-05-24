@@ -94,7 +94,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                     </div>
                 </div>
                 {
-                    childd && childd.length && (
+                    childd && childd.length ? (
                         <div
                             className='grid grid-cols-12 col-span-12 gap-4 overflow-hidden rounded-3xl bg-neutral-50 shadow-sm'
                         >
@@ -106,7 +106,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                                 />
                             </div>
                         </div>
-                    )
+                    ) : null
                 }
                 <div
                     className='grid grid-cols-12 col-span-12 gap-4 overflow-hidden rounded-3xl bg-neutral-50 shadow-sm p-8'
