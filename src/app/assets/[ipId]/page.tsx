@@ -14,7 +14,6 @@ import PriceGraph from "./components/PriceGraph";
 import Image from 'next/image';
 import ImgPlaceholder from '@/../public/images/imagePlaceholder.png'
 import useIPSWithNft from "@/app/hooks/useIPSWithNft";
-import { getAddress } from "viem";
 
 
 export default function Page({ params: { ipId } }: { params: { ipId: string } }) {
@@ -24,6 +23,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
     const [openSellModal, setOpenSellModal] = useState(false);
     const [licenses, setLicenses] = useState<any>([])
     const data = ipsWithNft.find(nft => nft.ipId === ipId);
+    const childd = data?.remixs.map(r => ipsWithNft.find(nft => nft.ipId === r.childIpId));
     if (isLoading && !data) return <LoadingBlock />;
 
     return (
@@ -93,13 +93,21 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                         <Detail data={data} />
                     </div>
                 </div>
-                {/* <div
-                    className='grid grid-cols-12 col-span-12 gap-4 overflow-hidden rounded-3xl bg-neutral-50 shadow-sm'
-                >
-                    <div className='col-span-6 p-8'>
-                        <h2 className="text-2xl font-bold">Lineage</h2>
-                    </div>
-                </div> */}
+                {
+                    childd && childd.length && (
+                        <div
+                            className='grid grid-cols-12 col-span-12 gap-4 overflow-hidden rounded-3xl bg-neutral-50 shadow-sm'
+                        >
+                            <div className='col-span-12 p-8'>
+                                <h2 className="text-2xl font-bold">Lineage</h2>
+                                <RelationshipGraph
+                                    child={childd as any}
+                                    self={data as any}
+                                />
+                            </div>
+                        </div>
+                    )
+                }
                 <div
                     className='grid grid-cols-12 col-span-12 gap-4 overflow-hidden rounded-3xl bg-neutral-50 shadow-sm p-8'
                 >

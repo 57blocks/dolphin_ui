@@ -18,11 +18,12 @@ export default function NftCards() {
     return <>
         <div className="flex space-x-8 text-[32px] mt-10">
             <h2 className="font-bold py-4">
-                <Link href='/register'>Marketplace</Link>
-                <p className="h-[2px] w-1/2 bg-[#5538CE] mt-4"></p>
+                <Link href='/'>Marketplace</Link>
             </h2>
             <h2 className="font-bold text-[#5538CE] relative py-4 flex flex-col items-center">
                 My Assets
+                <p className="h-[2px] w-1/2 bg-[#5538CE] mt-4"></p>
+
             </h2>
         </div>
         <p className="text-gray-500 mt-4">Follow the steps to register your intellectual property</p>

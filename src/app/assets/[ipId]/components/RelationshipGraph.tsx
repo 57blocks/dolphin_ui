@@ -1,45 +1,24 @@
+import { DLExtendedNFTMetadata } from '@/simplehash/types';
 import { Asset } from '@/story/types';
 import * as echarts from 'echarts';
 import { useEffect, useRef } from 'react';
 
 interface IProps {
-    parents?: Asset[] | null
-    childrenAssets?: Asset[] | null
-    self: Asset
+    child?: DLExtendedNFTMetadata[]
+    self: DLExtendedNFTMetadata
 }
-
-function handleParents(parents: Asset[], self: Asset) {
-    const data = parents.map((p, idx) => {
-        return {
-            name: p.nftMetadata.name || `${p.tokenId}:${p.id}`,
-            x: 10 + idx * 5,
-            y: 10,
-        }
-    });
-    const links = parents.map(p => {
-        return {
-            source: p.nftMetadata.name || `${p.tokenId}:${p.id}`,
-            target: self.nftMetadata.name || `${self.tokenId}:${self.id}`,
-        }
-    })
-    return {
-        parentsData: data,
-        parentsLink: links
-    }
-}
-
-function handleChildren(children: Asset[], self: Asset) {
+function handleChildren(children: DLExtendedNFTMetadata[], self: DLExtendedNFTMetadata) {
     const data = children.map((c, idx) => {
         return {
-            name: c.nftMetadata.name || `${c.tokenId}:${c.id}`,
+            name: c.name || `${c.tokenId}:${c.id}`,
             x: 10 + idx * 5,
             y: 30,
         }
     });
     const links = children.map(c => {
         return {
-            source: self.nftMetadata.name || `${self.tokenId}:${self.id}`,
-            target: c.nftMetadata.name || `${c.tokenId}:${c.id}`,
+            source: self.name || `${self.tokenId}:${self.id}`,
+            target: c.name || `${c.tokenId}:${c.id}`,
         }
     })
     return {
@@ -49,26 +28,21 @@ function handleChildren(children: Asset[], self: Asset) {
 }
 
 export default function RelationshipGraph({
-    parents,
-    childrenAssets,
+    child,
     self
 }: IProps) {
     const ref = useRef(null);
     useEffect(() => {
         const myChart = echarts.init(ref.current);
         const dataArr = [{
-            name: self.nftMetadata.name || `${self.tokenId}:${self.id}`,
+            name: self.name || `${self.tokenId}:${self.id}`,
             x: 10,
             y: 20,
         }];
         const linkArr = [];
-        if (parents && parents.length) {
-            const { parentsData, parentsLink } = handleParents(parents, self);
-            dataArr.push(...parentsData)
-            linkArr.push(...parentsLink)
-        }
-        if (childrenAssets && childrenAssets.length) {
-            const { childrenData, childrenLink } = handleChildren(childrenAssets, self);
+
+        if (child && child.length) {
+            const { childrenData, childrenLink } = handleChildren(child, self);
             dataArr.push(...childrenData)
             linkArr.push(...childrenLink)
         }
@@ -102,5 +76,5 @@ export default function RelationshipGraph({
         });
     }, []);
 
-    return <div className='col-span-6' ref={ref}></div>
+    return <div className='col-span-12 h-[400px]' ref={ref}></div>
 }
