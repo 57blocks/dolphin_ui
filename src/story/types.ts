@@ -1,3 +1,4 @@
+import { NFTMetadata } from '@/simplehash/types'
 import { Address, Hash } from 'viem'
 
 export enum RESOURCE_TYPE {
@@ -366,6 +367,7 @@ export type GraphDetial = {
     floorPrice: BigInt,
     supply: number,
     remixs: {
-        childIpId: string
+        childIpId: Address
     }[]
+    children: NFTMetadata[]
 }

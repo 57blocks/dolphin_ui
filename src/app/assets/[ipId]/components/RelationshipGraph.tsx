@@ -4,9 +4,50 @@ import * as echarts from 'echarts';
 import { useEffect, useRef } from 'react';
 
 interface IProps {
+    parents?: DLExtendedNFTMetadata[]
     child?: DLExtendedNFTMetadata[]
     self: DLExtendedNFTMetadata
 }
+
+function handleParents(parents: DLExtendedNFTMetadata[]) {
+    let data: any = [];
+    parents.forEach((c, idx) => {
+        data.push({
+            name: `${c.name}-${c.tokenId}`,
+            x: 10 + idx * 5,
+            y: 10,
+        })
+        if (c.children.length) {
+            c.children.forEach((r, index) => {
+                data.push({
+                    name: `${r.name}-${r.token_id}`,
+                    x: 10 + index * 5,
+                    y: 20,
+                })
+            })
+        }
+    });
+    let links: {
+        source: string,
+        target: string
+    }[] = [];
+    parents.forEach(c => {
+        if (c.children.length) {
+            c.children.forEach(r => {
+                links.push({
+                    source: `${c.name}-${c.tokenId}`,
+                    target: `${r.name}-${r.token_id}`,
+                })
+            })
+        }
+    })
+    return {
+        parentsData: data,
+        parentsLink: links
+    }
+}
+
+
 function handleChildren(children: DLExtendedNFTMetadata[], self: DLExtendedNFTMetadata) {
     const data = children.map((c, idx) => {
         return {
@@ -28,23 +69,32 @@ function handleChildren(children: DLExtendedNFTMetadata[], self: DLExtendedNFTMe
 }
 
 export default function RelationshipGraph({
+    parents,
     child,
     self
 }: IProps) {
     const ref = useRef(null);
     useEffect(() => {
         const myChart = echarts.init(ref.current);
-        const dataArr = [{
-            name: `${self.name}-${self.tokenId}`,
-            x: 10,
-            y: 20,
-        }];
+        const dataArr = [];
         const linkArr = [];
 
         if (child && child.length) {
             const { childrenData, childrenLink } = handleChildren(child, self);
             dataArr.push(...childrenData)
             linkArr.push(...childrenLink)
+        }
+
+        if (parents && parents.length) {
+            const { parentsData, parentsLink } = handleParents(parents);
+            dataArr.push(...parentsData)
+            linkArr.push(...parentsLink)
+        } else {
+            dataArr.push({
+                name: `${self.name}-${self.tokenId}`,
+                x: 10,
+                y: 20,
+            })
         }
 
         myChart.setOption({
@@ -75,7 +125,7 @@ export default function RelationshipGraph({
                 }
             ]
         });
-    }, []);
+    }, [parents?.length]);
 
     return <div className='col-span-12 h-[400px]' ref={ref}></div>
 }

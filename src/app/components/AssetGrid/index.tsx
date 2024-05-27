@@ -27,7 +27,7 @@ export default function AssetGtid() {
                 const special = {
                     childIpId: "0x7a0693a8da47463295959c2dd7547140f527ab76",
                     __typename: 'Remix',
-                }
+                } as any
 
                 if (ip.remixs.length) {
                     let r = ip.remixs;

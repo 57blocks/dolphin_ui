@@ -14,17 +14,31 @@ import PriceGraph from "./components/PriceGraph";
 import Image from 'next/image';
 import ImgPlaceholder from '@/../public/images/imagePlaceholder.png'
 import useIPSWithNft from "@/app/hooks/useIPSWithNft";
+import useQueryIPParent from "@/app/hooks/useQueryIPParent";
+import { Address } from "viem";
 
 
 export default function Page({ params: { ipId } }: { params: { ipId: string } }) {
-    const { isLoading, rootIps, ipsWithNft } = useIPSWithNft()
+    const { isLoading, ipsWithNft } = useIPSWithNft()
     const [open, setOpen] = useState(false);
     const [openRemixModal, setOpenRemixModal] = useState(false);
     const [openSellModal, setOpenSellModal] = useState(false);
     const [licenses, setLicenses] = useState<any>([])
+    const { data: parents, loading: queryIPDetailLoading } = useQueryIPParent(ipId as Address)
     const data = ipsWithNft.find(nft => nft.ipId === ipId);
+    const parentsWithNft = parents?.map(p => {
+        const parent = ipsWithNft.find(nft => nft.ipId === p.ipId);
+        let remix: any = [];
+        if (parent?.remixs.length) {
+            remix = parent.remixs.map(r => ipsWithNft.find(nft => nft.ipId === r.childIpId))
+        }
+        return {
+            ...parent,
+            children: remix
+        }
+    })
     const childd = data?.remixs.map(r => ipsWithNft.find(nft => nft.ipId === r.childIpId));
-    if (isLoading && !data) return <LoadingBlock />;
+    if (isLoading && queryIPDetailLoading && !data) return <LoadingBlock />;
 
     return (
         <main className="flex flex-col items-center justify-between">
@@ -101,6 +115,7 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                             <div className='col-span-12 p-8'>
                                 <h2 className="text-2xl font-bold">Lineage</h2>
                                 <RelationshipGraph
+                                    parents={parentsWithNft as any}
                                     child={childd as any}
                                     self={data as any}
                                 />

@@ -6,7 +6,7 @@ import { useQuery, gql } from '@apollo/client';
 import { useEffect, useState } from 'react';
 
 const GET_POSTS = gql`
-    query GetPosts {
+    {
         ips(first: 1000) {
                 id,
                 ipId,
@@ -58,7 +58,7 @@ export default function useIPSWithNft() {
                 .reduce((prev: any, next: any) => prev.concat(...next.remixs), [])
                 .map((r: any) => r.childIpId)
             const rootIpss = data?.ips.filter((ip: any) => !remixedIpIds.includes(ip.ipId)) as GraphDetial[]
-            setrootIps(rootIpss)
+            setrootIps(rootIpss);
             setIpAssets(ipAssets);
         } catch (err) {
             setError(err)
@@ -66,6 +66,7 @@ export default function useIPSWithNft() {
             setLoading(false)
         }
     }
+
     return {
         isLoading: graphQLLoaing || loading,
         error,
