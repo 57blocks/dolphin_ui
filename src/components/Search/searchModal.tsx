@@ -1,10 +1,9 @@
-import { getResource } from "@/story/storyApi";
-import { Asset, RESOURCE_TYPE } from "@/story/types";
 import { CrossCircledIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { useQuery } from "@tanstack/react-query";
 import { ChangeEventHandler, useState } from "react";
 import { Dialog, Spinner, TextField } from "@radix-ui/themes";
 import Link from "next/link";
+import { Address } from "viem";
+import useQueryIPbyIpId from "@/app/hooks/useQueryIPByIpId";
 
 export default function SearchModal({
     visible,
@@ -14,31 +13,19 @@ export default function SearchModal({
     onClose?: () => void
 }) {
     const [word, setWord] = useState('');
-    const doSearch = async () => {
-        const { data } = await getResource(RESOURCE_TYPE.ASSET, word);
-        if (data) return data as Asset;
-        return null;
-    }
     const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
         const value = event.target.value.trim();
         setWord(value);
     }
 
-    const {
-        data,
-        isLoading
-    } = useQuery({
-        queryKey: ['search asset', word],
-        queryFn: () => doSearch(),
-        enabled: !!word,
-    })
+    const { data, loading } = useQueryIPbyIpId(word as Address)
 
     const renderSearchContent = () => {
-        if (isLoading) return <Spinner />
+        if (loading) return <Spinner />
         if (data) return <Link onClick={() => {
             onClose && onClose()
-        }} href={`/assets/${data.id}`} className="block rounded-md p-2 hover:bg-indigo-500 hover:text-white">
-            Asset: {data.id}
+        }} href={`/assets/${data.ipId}`} className="block rounded-md p-2 hover:bg-indigo-500 hover:text-white">
+            Asset: {data.ipId}
         </Link>
         if (data === null) return <p>Can not find asset with IP ID {word}</p>
         return <p>
