@@ -9,7 +9,7 @@ interface IProps {
     self: DLExtendedNFTMetadata
 }
 
-function handleParents(parents: DLExtendedNFTMetadata[]) {
+function handleParents(parents: DLExtendedNFTMetadata[], self: DLExtendedNFTMetadata) {
     let data: any = [];
     parents.forEach((c, idx) => {
         data.push({
@@ -19,11 +19,28 @@ function handleParents(parents: DLExtendedNFTMetadata[]) {
         })
         if (c.children.length) {
             c.children.forEach((r, index) => {
-                data.push({
-                    name: `${r.name}-${r.token_id}`,
-                    x: 10 + index * 5,
-                    y: 20,
-                })
+                if (`${r.token_count}-${r.token_id}` === `${self.token_count}-${self.token_id}`) {
+                    data.push({
+                        name: `${r.name}-${r.token_id}`,
+                        x: 10 + index * 5,
+                        y: 20,
+                        symbolSize: 40,
+                        itemStyle: {
+                            color: '#16a34a'
+                        },
+                        label: {
+                            formatter: (data: any) => {
+                                return `Current \n ${data.name}`
+                            }
+                        }
+                    })
+                } else {
+                    data.push({
+                        name: `${r.name}-${r.token_id}`,
+                        x: 10 + index * 5,
+                        y: 20,
+                    })
+                }
             })
         }
     });
@@ -86,7 +103,7 @@ export default function RelationshipGraph({
         }
 
         if (parents && parents.length) {
-            const { parentsData, parentsLink } = handleParents(parents);
+            const { parentsData, parentsLink } = handleParents(parents, self);
             dataArr.push(...parentsData)
             linkArr.push(...parentsLink)
         } else {
@@ -94,6 +111,15 @@ export default function RelationshipGraph({
                 name: `${self.name}-${self.tokenId}`,
                 x: 10,
                 y: 20,
+                symbolSize: 40,
+                itemStyle: {
+                    color: '#16a34a'
+                },
+                label: {
+                    formatter: (data: any) => {
+                        return `Root \n ${data.name}`
+                    }
+                }
             })
         }
 
