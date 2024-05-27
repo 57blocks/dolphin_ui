@@ -10,15 +10,15 @@ interface IProps {
 function handleChildren(children: DLExtendedNFTMetadata[], self: DLExtendedNFTMetadata) {
     const data = children.map((c, idx) => {
         return {
-            name: c.name || `${c.tokenId}:${c.id}`,
+            name: `${c.name}-${c.tokenId}`,
             x: 10 + idx * 5,
             y: 30,
         }
     });
     const links = children.map(c => {
         return {
-            source: self.name || `${self.tokenId}:${self.id}`,
-            target: c.name || `${c.tokenId}:${c.id}`,
+            source: `${self.name}-${self.tokenId}`,
+            target: `${c.name}-${c.tokenId}`,
         }
     })
     return {
@@ -35,7 +35,7 @@ export default function RelationshipGraph({
     useEffect(() => {
         const myChart = echarts.init(ref.current);
         const dataArr = [{
-            name: self.name || `${self.tokenId}:${self.id}`,
+            name: `${self.name}-${self.tokenId}`,
             x: 10,
             y: 20,
         }];
@@ -46,6 +46,7 @@ export default function RelationshipGraph({
             dataArr.push(...childrenData)
             linkArr.push(...childrenLink)
         }
+
         myChart.setOption({
             tooltip: {},
             animationDurationUpdate: 1500,
