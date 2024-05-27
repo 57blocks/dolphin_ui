@@ -23,22 +23,20 @@ export default function AssetGtid() {
                 const ipWithNft = ipsWithNft.find(nft => nft.ipId === ip.ipId)
                 const remixes: any = [ipWithNft];
 
-                const specialId = '0x942260ef72d1f0c45dc7472f79f0631bf246bfde'
-                const special = {
-                    childIpId: "0x7a0693a8da47463295959c2dd7547140f527ab76",
-                    __typename: 'Remix',
-                } as any
-
                 if (ip.remixs.length) {
                     let r = ip.remixs;
-                    if (ip.id === specialId) {
-                        r = r.concat(special)
-                    }
                     const remixsWithNft = r.map(p => {
                         const pWithNft = ipsWithNft.find(nf => nf.ipId === p.childIpId)
                         return pWithNft
                     })
                     remixes.push(...remixsWithNft);
+                    const rmixs = remixsWithNft.reduce((prev, curr: any) => prev.concat(...curr.remixs), [])
+                    if (rmixs.length) {
+                        rmixs.forEach((r: any) => {
+                            const rWithNft = ipsWithNft.find(nf => nf.ipId === r.childIpId);
+                            remixes.push(rWithNft);
+                        })
+                    }
                 }
                 return (
                     <div key={ip.id} className='mt-8'>
