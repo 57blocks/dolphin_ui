@@ -14,7 +14,7 @@ export default function AssetGtid() {
                 <p className="h-[2px] w-1/2 bg-[#5538CE] mt-4"></p>
             </h2>
             <h2 className="font-bold py-4">
-                <Link href='/register'>My Assets</Link>
+                <Link href='/register'>To List</Link>
             </h2>
         </div>
 

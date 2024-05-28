@@ -21,7 +21,7 @@ export default function NftCards() {
                 <Link href='/'>Marketplace</Link>
             </h2>
             <h2 className="font-bold text-[#5538CE] relative py-4 flex flex-col items-center">
-                My Assets
+                To List
                 <p className="h-[2px] w-1/2 bg-[#5538CE] mt-4"></p>
 
             </h2>
