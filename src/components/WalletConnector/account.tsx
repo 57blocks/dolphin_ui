@@ -5,6 +5,7 @@ import { useAccount, useDisconnect } from 'wagmi'
 import { AlertDialog, Button, DropdownMenu, Flex } from '@radix-ui/themes'
 import { useState } from 'react'
 import { sepolia } from 'viem/chains'
+import Link from 'next/link'
 
 export function Account() {
     const [open, setOpen] = useState(false);
@@ -23,6 +24,11 @@ export function Account() {
                 </Button>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content>
+                <DropdownMenu.Item asChild
+                    className='nav-menu_btn'
+                >
+                    <Link href="/profile">My Profile</Link>
+                </DropdownMenu.Item>
                 <DropdownMenu.Item
                     className='nav-menu_btn'
                     onClick={() => {
