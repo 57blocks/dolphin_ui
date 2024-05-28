@@ -5,19 +5,16 @@ interface IProps {
     title: string
     desc: ReactElement
     visible?: boolean
+    onClose?: () => void
 }
 
 export default function Alert({
     title,
     desc,
-    visible
+    visible,
+    onClose
 }: IProps) {
-    const [open, setOpen] = useState(visible);
-
-    useEffect(() => {
-        setOpen(visible)
-    }, [visible])
-    return <AlertDialog.Root open={open}>
+    return <AlertDialog.Root open={visible}>
         <AlertDialog.Content>
             <AlertDialog.Title color="red">{title}</AlertDialog.Title>
             <Separator my="3" size="4" />
@@ -26,7 +23,9 @@ export default function Alert({
             </AlertDialog.Description>
             <Separator my="3" size="4" />
             <Flex gap="3" mt="4" justify="end">
-                <Button onClick={() => setOpen(false)}>
+                <Button onClick={() => {
+                    onClose && onClose()
+                }}>
                     Close
                 </Button>
             </Flex>

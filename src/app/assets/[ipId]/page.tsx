@@ -16,9 +16,13 @@ import ImgPlaceholder from '@/../public/images/imagePlaceholder.png'
 import useIPSWithNft from "@/app/hooks/useIPSWithNft";
 import useQueryIPParent from "@/app/hooks/useQueryIPParent";
 import { Address } from "viem";
+import { useAccount } from "wagmi";
+import Alert from "@/components/Alert";
 
 
 export default function Page({ params: { ipId } }: { params: { ipId: string } }) {
+    const { isConnecting, isDisconnected } = useAccount()
+    const [openAlert, setOpenAlert] = useState(false);
     const { isLoading, ipsWithNft } = useIPSWithNft()
     const [open, setOpen] = useState(false);
     const [openRemixModal, setOpenRemixModal] = useState(false);
@@ -52,17 +56,31 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                         <Button
                             variant="outline"
                             className="w-[150px] rounded-lg py-5 cursor-pointer text-[#5538CE] border-[#5538CE] shadow-[#5538CE]"
-                            onClick={() => setOpenRemixModal(true)}
+                            onClick={() => {
+                                if (isConnecting || isDisconnected) {
+                                    setOpenAlert(true)
+                                } else {
+                                    setOpenRemixModal(true)
+                                }
+                            }}
                         >Remix</Button>
                         <Button
                             onClick={() => {
-                                setOpen(true)
+                                if (isConnecting || isDisconnected) {
+                                    setOpenAlert(true)
+                                } else {
+                                    setOpen(true)
+                                }
                             }}
                             className="w-[150px] rounded-lg bg-[#5538CE] py-5 cursor-pointer"
                         >Buy</Button>
                         <Button
                             onClick={() => {
-                                setOpenSellModal(true)
+                                if (isConnecting || isDisconnected) {
+                                    setOpenAlert(true)
+                                } else {
+                                    setOpenSellModal(true)
+                                }
                             }}
                             className="w-[150px] rounded-lg bg-[#5538CE] py-5 cursor-pointer"
                         >Sell</Button>
@@ -147,6 +165,12 @@ export default function Page({ params: { ipId } }: { params: { ipId: string } })
                 asset={data as any}
                 licenses={licenses}
                 onClose={() => setOpenRemixModal(false)}
+            />
+            <Alert
+                visible={openAlert}
+                title="Wallet Checking"
+                desc={<div>Please connect the wallet!</div>}
+                onClose={() => setOpenAlert(false)}
             />
         </main>
     )
