@@ -13,18 +13,24 @@ export default function PriceGraph() {
             },
             xAxis: {
                 type: 'category',
-                data: priceData.x
+                data: priceData.x,
+                name: 'Number of token in supply',
+                nameLocation: "center",
+                nameTextStyle: {
+                    padding: [20, 0, 0, 0]
+                }
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
+                name: 'Price(ETH)'
             },
             tooltip: {
                 trigger: 'axis'
             },
             grid: {
-                left: '0%',
+                left: '3%',
                 right: '0%',
-                bottom: '0%',
+                bottom: '10%',
                 containLabel: true
             },
             series: [
