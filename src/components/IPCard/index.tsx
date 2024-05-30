@@ -2,12 +2,13 @@ import Link from "next/link";
 import Image from 'next/image';
 import formatAddress from "@/utils/formatAddress";
 import { DLExtendedNFTMetadata } from "@/simplehash/types";
+import ImgPlaceholder from '@/../public/images/imagePlaceholder.png'
 
 export default function IPCard({ ipf }: { ipf: DLExtendedNFTMetadata }) {
     return <Link href={`/assets/${ipf.ipId}`}>
         <div className='mx-[12px] rounded-[12px] overflow-hidden z-10 cursor-pointer shadow-xl transition-all hover:translate-y-[-5px] hover:shadow-lg'>
             <div className='overflow-hidden'>
-                <Image alt="" height={200} width={200} src={ipf.image_url} className='w-full h-full object-cover aspect-[3/2]' />
+                <Image alt="" height={200} width={200} src={ipf.image_url || ImgPlaceholder} className='w-full h-full object-cover aspect-[3/2]' />
             </div>
             <div className='bg-white mt-5 px-5 pb-6'>
                 <div className='mb-4'>
