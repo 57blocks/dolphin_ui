@@ -26,26 +26,37 @@ export default function DPSlider({
         <div className='relative'>
             <div
                 className='absolute p-1 z-20 left-[-24px] flex items-center top-0 bottom-0 cursor-pointer rounded-lg hover:bg-indigo-500/50'
-                onClick={() => sliderRef.current.slickPrev()}
+                onClick={() => remixes.length <= 4 ? "" : sliderRef.current.slickPrev()}
             >
                 <ChevronLeftIcon className='w-[24px] h-[24px]' />
             </div>
 
             <div
                 className='absolute p-1 z-20 right-[-24px] flex items-center top-0 bottom-0 cursor-pointer rounded-lg hover:bg-indigo-500/50'
-                onClick={() => sliderRef.current.slickNext()}>
+                onClick={() => remixes.length <= 4 ? "" : sliderRef.current.slickNext()}>
                 <ChevronRightIcon className='w-[24px] h-[24px]' />
             </div>
             <div>
-                <Slider {...settings} ref={sliderRef}>
-                    {
-                        remixes.map((ipf) =>
-                            <div key={ipf.ipId} className='pb-10 pt-4'>
-                                <IPCard ipf={ipf} />
-                            </div>
-                        )
-                    }
-                </Slider>
+                {
+                    remixes.length <= 4 ?
+                        <div className="grid grid-cols-4 gap-2">
+                            {remixes.map((ipf) =>
+                                <div key={ipf.ipId} className='pb-10 pt-4'>
+                                    <IPCard ipf={ipf} />
+                                </div>
+                            )}
+                        </div>
+                        : <Slider {...settings} ref={sliderRef}>
+                            {
+                                remixes.map((ipf) =>
+                                    <div key={ipf.ipId} className='pb-10 pt-4'>
+                                        <IPCard ipf={ipf} />
+                                    </div>
+                                )
+                            }
+                        </Slider>
+                }
+
             </div>
         </div>
     </>
